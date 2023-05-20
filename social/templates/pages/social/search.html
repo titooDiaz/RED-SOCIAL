@@ -1,0 +1,65 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+
+{% block left_sidebar %}
+{% include 'components/sidebars/left/sidebar.html' %}
+{% endblock left_sidebar %}
+
+
+  {% block content %}
+<div class="w-full mx-auto lg:w-3/4 xl:w-3/5  sm:mt-0 mt-40 px-2"> 
+    <div class="grid sm:grid-cols-3 grid-cols-2 gap-4 ">
+
+
+      {% for user in profile_list %}
+      <div class="grid grid-cols-1">
+        <div class="col-span-1 bg-white-200 rounded-md border-1 border-black ">
+          <div class="bg-white m-1 overflow-hidden shadow-md dark:bg-dark-second">
+            <div class="top pt-5">
+              <img src="{{ user.picture.url }}?{{img}}" alt="Profile picture" class="w-24 h-24 rounded-full mx-auto border-4">
+            </div>
+            <h6 class="dark:text-dark-txt text-center text-1xl font-sans font-medium pt-1"> <b>{{ user.user.username }} </b> </h6>
+            <h6 class=" dark:text-dark-txt text-center text-1xl font-sans font-medium pt-1 pb-5">
+              {% if user.user.profile.name == none %}
+                sin nombre...
+              {% else %}
+                {{ user.user.profile.name }}  
+              {% endif %}
+            </h6>
+            <div class="w-2/3 mx-auto">
+              <a href="{% url 'users:profile' user.user.username %}" class=" bg-green-500 text-white px-4 py-1 mb-5 text-center rounded-md mx-auto block w-70">
+                Ver
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+        
+      {% endfor %}
+    
+    </div>
+</div>
+  {% endblock content %}
+
+
+
+{% block right_sidebar %}
+{% endblock right_sidebar %}
+
+
+
+{% block footer %}
+{% endblock footer %}
+
+{% block javascript %}{% endblock javascript %}

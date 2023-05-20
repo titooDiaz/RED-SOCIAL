@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load tailwind_filters %}
+
+{% block title %}{{user.username}} Edit Profile{% endblock title %}
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+{% block left_sidebar %}
+{% comment %} {% include 'components/sidebars/left/users/sidebar.html' %} {% endcomment %}
+{% endblock left_sidebar %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar cambios</button>
+</form>
+
+{% endblock content %}
