@@ -165,17 +165,19 @@
                         <input type="hidden" name="next" value="{{request.path}}">
                         {% if request.user.is_authenticated %}
                         {% if request.user in post.likes.all %}
-                            <button type="submit" class=" flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl py-2 rounded-lg cursor-pointer text-blue-600">
+                            <button id="like-btn-{{ post.pk }}" type="submit" class=" flex space-x-2 justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-blue-600">
                         {% else %}
-                            <button type="submit" class=" flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl py-2 rounded-lg cursor-pointer text-gray-500 ">
+                            <button id="like-btn-{{ post.pk }}" type="submit" class=" flex space-x-2 justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-gray-500 ">
                         {% endif %}
                        {% endif %}
 
                             <i class='bx bx-like'></i>
                             
-                            <p class="text-sm font-semibold">{{post.likes.all.count}} </p>
+                            <p class="text-sm font-semibold like-count">{{post.likes.all.count}} </p>
                         </button> 
                     </form>
+
+
 
                     <form method="POST" action="{% url 'social:dislike' post.pk %}" class="mt-0 px-2">
                         {% csrf_token %}
@@ -183,18 +185,123 @@
 
                         {% if request.user.is_authenticated %}
                         {% if request.user in post.dislikes.all %}
-                            <button type="submit" class=" flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl py-2 rounded-lg cursor-pointer text-red-500 ">
+                            <button id="dislike-btn-{{ post.pk }}" type="submit" class=" flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl py-2 rounded-lg cursor-pointer text-red-500 ">
                         {% else %}
-                            <button type="submit" class=" flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl py-2 rounded-lg cursor-pointer text-gray-500 ">
+                            <button id="dislike-btn-{{ post.pk }}" type="submit" class=" flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl py-2 rounded-lg cursor-pointer text-gray-500 ">
                         {% endif %}
                         {% endif %}
                             <i class='bx bx-dislike'></i>
-                            <p class="text-sm font-semibold">{{post.dislikes.all.count}} </p>
+                            <p class="text-sm font-semibold dislike-count">{{post.dislikes.all.count}} </p>
                         </button> 
                     </form>
 
 
-    
+                    <script>
+                        //////////////////////////////////////
+                        //<!-- LIKE DISLIKE DE PUBLICACIONES -->
+                        //////////////////////////////////////
+
+                        document.addEventListener('DOMContentLoaded', function() {
+                            var likeBtn = document.getElementById('like-btn-{{ post.pk }}');
+                            var dislikeBtn = document.getElementById('dislike-btn-{{ post.pk }}');
+
+                            likeBtn.addEventListener('click', handleLikeClick);
+                            dislikeBtn.addEventListener('click', handleDislikeClick);
+
+                            function handleLikeClick(event) {
+                                event.preventDefault();
+                                sendAjaxRequest("{% url 'social:like' post.pk %}", handleLikeResponse);
+                            }
+
+                            function handleDislikeClick(event) {
+                                event.preventDefault();
+                                sendAjaxRequest("{% url 'social:dislike' post.pk %}", handleDislikeResponse);
+                            }
+
+                            function sendAjaxRequest(url, responseHandler) {
+                                fetch(url, {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRFToken': '{{ csrf_token }}',
+                                    },
+                                    body: new FormData()
+                                })
+                                .then(function(response) {
+                                    if (response.ok) {
+                                        return response.json();
+                                    } else {
+                                        throw new Error('Error en la solicitud');
+                                    }
+                                })
+                                .then(responseHandler)
+                                .catch(function(error) {
+                                    console.error(error);
+                                });
+                            }
+
+                            function handleLikeResponse(data) {
+                                updateButtonState(likeBtn, data.liked, 'text-blue-600', 'text-gray-500');
+                                updateButtonState(dislikeBtn, !data.disliked, 'text-gray-500', 'text-red-500');
+                                updateCounter(likeBtn, data.like_count);
+                                updateCounter(dislikeBtn, data.dislike_count);
+                                animateButton(likeBtn); //funcion de animar
+                            }
+
+                            function handleDislikeResponse(data) {
+                                updateButtonState(dislikeBtn, data.disliked, 'text-red-500', 'text-gray-500');
+                                updateButtonState(likeBtn, !data.liked, 'text-gray-500', 'text-blue-500');
+                                updateCounter(dislikeBtn, data.dislike_count);
+                                updateCounter(likeBtn, data.like_count);
+                                animateButton(dislikeBtn); //funcion de animar
+                            }
+
+                            function updateButtonState(btn, isActive, activeClass, inactiveClass) {
+                                btn.classList.toggle(activeClass, isActive);
+                                btn.classList.toggle(inactiveClass, !isActive);
+                            }
+
+                            function updateCounter(btn, count) {
+                                var counter = btn.querySelector('.text-sm');
+                                if (counter) {
+                                    counter.textContent = count;
+                                }
+                            }
+
+                            function animateButton(btn) {
+                                btn.classList.add('like-animation');
+                                setTimeout(function() {
+                                    btn.classList.remove('like-animation');
+                                }, 500);
+                            }
+
+                        });
+
+                        //////////////////////////////////////////
+                        //<!-- FIN LIKE DISLIKE DE PUBLICACIONES -->
+                        //////////////////////////////////////////
+
+                    </script>
+
+                    <style>
+                        .like-animation {
+                                    animation: likeAnimation 0.5s;
+                                }
+
+                                @keyframes likeAnimation {
+                                    0% {
+                                        transform: scale(1);
+                                    }
+                                    50% {
+                                        transform: scale(1.2);
+                                    }
+                                    100% {
+                                        transform: scale(1);
+                                    }
+                                }
+                    </style>
+                    
+
+
                     <div @click="open = true" class="w-auto flex justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl py-2 rounded-lg cursor-pointer text-gray-500 dark:text-dark-txt h-10">
                         <i class='bx bx-comment'></i>
                         <span class="text-sm font-semibold mx-2"> Nuevo</span>

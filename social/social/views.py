@@ -8,6 +8,7 @@ from django.views.generic.edit import UpdateView, DeleteView
 from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import timezone
 from users.models import Profile
+from django.http import JsonResponse
 
 from django.db.models import Q #importar datos de la base de datos
 import time
@@ -149,8 +150,25 @@ class AddLike(LoginRequiredMixin, View):
         if is_like:
             post.likes.remove(request.user)
 
-        next = request.POST.get('next', '/')
-        return HttpResponseRedirect(next)
+
+        like_count = post.likes.count()
+
+        #variable para contar dislikes
+        dislike_count = post.dislikes.count()
+
+        info = 'like' #esto se hace para que en el java script podamos ahcer todo desde una funcion y no desde dos diferentes 
+
+        # Construir la respuesta en formato JSON
+        response_data = {
+            'info': info,
+            'liked': not is_like,
+            'like_count': like_count,
+            #dislike count
+            'dislike_count': dislike_count,
+        }
+
+        # Devolver la respuesta JSON
+        return JsonResponse(response_data)
 
 
 class AddDislike(LoginRequiredMixin, View):
@@ -180,8 +198,25 @@ class AddDislike(LoginRequiredMixin, View):
         if is_dislike:
             post.dislikes.remove(request.user)
 
-        next = request.POST.get('next', '/')
-        return HttpResponseRedirect(next)
+        dislike_count = post.dislikes.count()
+
+        #contar los likes poara retornar al javascript
+        like_count = post.likes.count()
+
+
+        info = 'dislike' #esto se hace para que en el java script podamos ahcer todo desde una funcion y no desde dos diferentes 
+
+        # Construir la respuesta en formato JSON
+        response_data = {
+            'info': info,
+            'disliked': not is_dislike,
+            'dislike_count': dislike_count,
+            #like coun
+            'like_count': like_count
+        }
+
+        # Devolver la respuesta JSON
+        return JsonResponse(response_data)
 
 
 
