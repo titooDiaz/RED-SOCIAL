@@ -30,23 +30,25 @@ urlpatterns = [
     path('post/<int:pk>/like', AddLike.as_view(), name='like'),
     path('post/<int:pk>/dislike', AddDislike.as_view(), name='dislike'),
 
-    #REPORTAR COSAS
+    #REPORTES
     path('post/<int:pk>/report', AddReport.as_view(), name='report'),
 
-    #busqueda 
+    #BUESQUEDA DE USUARIOS
     path('share/', UserSearch.as_view(), name='profile-search'),
 
+    #ELIMINAR EDITAR COEMENTARIOS
     path('post/<int:post_pk>/comment/delete/<int:pk>/', CommentDeleteView.as_view(), name="comment-delete"),
     path('post/<int:post_pk>/comment/edit/<int:pk>/', CommentEditView.as_view(), name="comment-edit"),
 
+    #DAR LIKE DISLIKE A LOS COMENTARIOS
     path('post/<int:post_pk>/comment/<int:pk>/like', AddCommentLike.as_view(), name="comment-like"),
     path('post/<int:post_pk>/comment/<int:pk>/dislike', AddCommentDislike.as_view(), name="comment-dislike"),
+
+    #RESPONDERA UN COEMNTARIO
     path('post/<int:post_pk>/comment/<int:pk>/reply',CommentReplyView.as_view(), name='comment-reply'),
 
 
     #### ADMINISTRAR
-
-
     #reportes
     path('Control/Reportes/admin', ControlReports.as_view(), name='ControlReports'),
     #aprobar

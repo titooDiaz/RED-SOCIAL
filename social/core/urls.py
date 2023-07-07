@@ -6,6 +6,15 @@ from django.conf.urls.static import static # importamos archivos estaticos
 from .views import HomeView # importar todo de path
 from .views import notification_redirect, notifications_delete # importar todo de path
 
+#PARA PDOER CAMBIAR LA IMAGEN DEL ADMIN DE DJANGO
+from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
+
+admin.site.site_header = "HOLA! AQUI PUEDES MODERAR COALSOCIAL"
+admin.site.site_title = "MODERAR COALSOCIAL"
+admin.site.index_title = "BIENVENIDO AL ADMINISTRADOR DEL COALSOCIAL!"
+
 urlpatterns = [
     path("admin/", admin.site.urls),
 

@@ -45,30 +45,49 @@
                 <span class="absolute top-0 right-0 bg-red-500 text-white font-semibold rounded-full px-1 text-center text-xs">{{SocialNotification.count}}</span>
             </div>
 
-            <div x-show="open" @click.away="open=false" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg dark:bg-dark-second bg-white ring-1 ring-black ring-opacity-5 focus:outline-none fixed z-10" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                <div class="py-1 " role="none">
-                    <p href="#" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0"> 
-                    {% if SocialNotification.count != 0 %}
-                        <a href="{% url 'notifications-delete' user=request.user.id %} " class="text-green-500 border-b border-green-500">
-                          eliminar todas las notificaciones
-                        </a> 
-                    {%else%}
-                    No hay notificaciones
 
-                    {% endif %}
+            <style>
+                /* Estilos personalizados para la barra de desplazamiento */
+                .notification-container::-webkit-scrollbar {
+                  width: 8px; /* Ancho de la barra de desplazamiento */
+                }
+              
+                .notification-container::-webkit-scrollbar-thumb {
+                  background-color: #888; /* Color del pulgar de la barra de desplazamiento */
+                }
+            </style>
 
-                      </p>
-                  {% for notification in SocialNotification %}
-                    <p href="#" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0"> 
-                      <img src="{{ notification.de.profile.picture.url }}?{{img}}" alt="Profile picture" class="w-10 h-10 rounded-full inline-block"> 
-                      {{notification.mensaje}} 
-                      <a href="{% url 'notification-redirect' dato=notification.post notification_id=notification.id %} " class="text-green-500 border-b border-green-500">
-                        ver
-                      </a> 
-                    </p>
-                  {% endfor %}
-                </div>
-              </div>
+
+<div x-show="open" @click.away="open=false" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg dark:bg-dark-second bg-white ring-1 ring-black ring-opacity-5 focus:outline-none fixed z-10" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+    <div class="py-1" role="none">
+  
+      <div class="notification-container max-h-48 overflow-y-auto md:max-h-full" style="max-height: 300px; overflow-y: auto;">
+  
+        <p href="#" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">
+          {% if SocialNotification.count != 0 %}
+          <a href="{% url 'notifications-delete' user=request.user.id %} " class="text-green-500 border-b border-green-500">
+            eliminar todas las notificaciones
+          </a>
+          {% else %}
+          No hay notificaciones
+          {% endif %}
+        </p>
+  
+        {% for notification in SocialNotification %}
+        <p href="#" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">
+          <img src="{{ notification.de.profile.picture.url }}?{{img}}" alt="Profile picture" class="w-10 h-10 rounded-full inline-block">
+          {{notification.mensaje}}
+          <a href="{% url 'notification-redirect' dato=notification.post notification_id=notification.id %} " class="text-green-500 border-b border-green-500">
+            ver
+          </a>
+        </p>
+        {% endfor %}
+      </div>
+  
+    </div>
+  </div>
+  
+
         </div>
 
             
@@ -191,37 +210,32 @@
                 <span class="text-xs absolute top-0 right-0 bg-red-500 text-white font-semibold rounded-full px-1 text-center">{{SocialNotification.count}}</span>
             </div>
 
-                <div x-show="open" @click.away="open=false" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg dark:bg-dark-second bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-
-                    <div class="py-1" role="none">
-
-                        <p href="#" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0"> 
-                            {% if SocialNotification.count != 0 %}
-                                <a href="{% url 'notifications-delete' user=request.user.id %} " class="text-green-500 border-b border-green-500">
-                                  eliminar todas las notificaciones
-                                </a> 
-                            {%else%}
-                            No hay notificaciones
-
-                            {% endif %}
-        
-                        </p>
-
-                        {% for notification in SocialNotification %}
-                    <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-                    <p href="#" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0"> 
-                        <img  src="{{ notification.de.profile.picture.url }}" alt="Profile picture" class="w-10 h-10 rounded-full inline-block"> 
-                        {{notification.mensaje}} 
-                        
-                        <a href="{% url 'notification-redirect' dato=notification.post notification_id=notification.id %} " class="text-green-500 border-b border-green-500">
-                            ver
-                        </a> 
-
-
+            <div x-show="open" @click.away="open=false" class="origin-top-right absolute right-0 mt-2 w-64 rounded-md shadow-lg dark:bg-dark-second bg-white ring-1 ring-black ring-opacity-5 focus:outline-none fixed z-10" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                <div class="py-1" role="none">
+              
+                  <div class="notification-container max-h-48 overflow-y-auto md:max-h-full" style="max-height: 300px; overflow-y: auto;">
+              
+                    <p href="#" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">
+                      {% if SocialNotification.count != 0 %}
+                      <a href="{% url 'notifications-delete' user=request.user.id %} " class="text-green-500 border-b border-green-500">
+                        eliminar todas las notificaciones
+                      </a>
+                      {% else %}
+                      No hay notificaciones
+                      {% endif %}
                     </p>
-                        {% endfor %}
-
-                    </div>
+              
+                    {% for notification in SocialNotification %}
+                    <p href="#" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">
+                      <img src="{{ notification.de.profile.picture.url }}?{{img}}" alt="Profile picture" class="w-10 h-10 rounded-full inline-block">
+                      {{notification.mensaje}}
+                      <a href="{% url 'notification-redirect' dato=notification.post notification_id=notification.id %} " class="text-green-500 border-b border-green-500">
+                        ver
+                      </a>
+                    </p>
+                    {% endfor %}
+                  </div>
+              
                 </div>
             </div>
 

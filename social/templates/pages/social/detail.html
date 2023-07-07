@@ -129,7 +129,10 @@
                     <div class="py-1" role="none">
                     <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
                     <a href="{% url 'social:post-edit' pk=post.pk%}" class="dark:hover:bg-dark-second dark:text-dark-txt text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">
-                    Edit
+                        <!--edits vg-->
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                          </svg>                          
                     </a>
                     <a href="{% url 'social:post-delete' pk=post.pk%}" class="dark:hover:bg-dark-second dark:text-dark-txt text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">
                     Delete
@@ -185,9 +188,9 @@
 
                         {% if request.user.is_authenticated %}
                         {% if request.user in post.dislikes.all %}
-                            <button id="dislike-btn-{{ post.pk }}" type="submit" class=" flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl py-2 rounded-lg cursor-pointer text-red-500 ">
+                            <button id="dislike-btn-{{ post.pk }}" type="submit" class=" flex space-x-2 justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-red-500 ">
                         {% else %}
-                            <button id="dislike-btn-{{ post.pk }}" type="submit" class=" flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl py-2 rounded-lg cursor-pointer text-gray-500 ">
+                            <button id="dislike-btn-{{ post.pk }}" type="submit" class=" flex space-x-2 justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-gray-500 ">
                         {% endif %}
                         {% endif %}
                             <i class='bx bx-dislike'></i>
@@ -196,115 +199,332 @@
                     </form>
 
 
-                    <script>
-                        //////////////////////////////////////
-                        //<!-- LIKE DISLIKE DE PUBLICACIONES -->
-                        //////////////////////////////////////
+                    <script>    
+                    
+                document.addEventListener('DOMContentLoaded', function() {
 
-                        document.addEventListener('DOMContentLoaded', function() {
-                            var likeBtn = document.getElementById('like-btn-{{ post.pk }}');
-                            var dislikeBtn = document.getElementById('dislike-btn-{{ post.pk }}');
-
-                            likeBtn.addEventListener('click', handleLikeClick);
-                            dislikeBtn.addEventListener('click', handleDislikeClick);
-
-                            function handleLikeClick(event) {
-                                event.preventDefault();
-                                sendAjaxRequest("{% url 'social:like' post.pk %}", handleLikeResponse);
+                    //////////////////////////////////////////////////////
+                    //<!-- LIKE DISLIKE DE PUBLICACIONES Y COMENTARIOS -->
+                    //////////////////////////////////////////////////////
+                
+                    //FUNCION AJAX PARA COMENTARIOS Y POST
+                    function AjaxPostCommentLikes(url, vista) {
+                        fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}',
+                            },
+                            body: new FormData()
+                        })
+                        .then(function(response) {
+                            if (response.ok) {
+                                return response.json();
+                            } else {
+                                throw new Error('Error en la solicitud');
                             }
-
-                            function handleDislikeClick(event) {
-                                event.preventDefault();
-                                sendAjaxRequest("{% url 'social:dislike' post.pk %}", handleDislikeResponse);
-                            }
-
-                            function sendAjaxRequest(url, responseHandler) {
-                                fetch(url, {
-                                    method: 'POST',
-                                    headers: {
-                                        'X-CSRFToken': '{{ csrf_token }}',
-                                    },
-                                    body: new FormData()
-                                })
-                                .then(function(response) {
-                                    if (response.ok) {
-                                        return response.json();
-                                    } else {
-                                        throw new Error('Error en la solicitud');
-                                    }
-                                })
-                                .then(responseHandler)
-                                .catch(function(error) {
-                                    console.error(error);
-                                });
-                            }
-
-                            function handleLikeResponse(data) {
-                                updateButtonState(likeBtn, data.liked, 'text-blue-600', 'text-gray-500');
-                                updateButtonState(dislikeBtn, !data.disliked, 'text-gray-500', 'text-red-500');
-                                updateCounter(likeBtn, data.like_count);
-                                updateCounter(dislikeBtn, data.dislike_count);
-                                animateButton(likeBtn); //funcion de animar
-                            }
-
-                            function handleDislikeResponse(data) {
-                                updateButtonState(dislikeBtn, data.disliked, 'text-red-500', 'text-gray-500');
-                                updateButtonState(likeBtn, !data.liked, 'text-gray-500', 'text-blue-500');
-                                updateCounter(dislikeBtn, data.dislike_count);
-                                updateCounter(likeBtn, data.like_count);
-                                animateButton(dislikeBtn); //funcion de animar
-                            }
-
-                            function updateButtonState(btn, isActive, activeClass, inactiveClass) {
-                                btn.classList.toggle(activeClass, isActive);
-                                btn.classList.toggle(inactiveClass, !isActive);
-                            }
-
-                            function updateCounter(btn, count) {
-                                var counter = btn.querySelector('.text-sm');
-                                if (counter) {
-                                    counter.textContent = count;
-                                }
-                            }
-
-                            function animateButton(btn) {
-                                btn.classList.add('like-animation');
-                                setTimeout(function() {
-                                    btn.classList.remove('like-animation');
-                                }, 500);
-                            }
-
+                        })
+                        .then(vista)
+                        .catch(function(error) {
+                            console.error(error);
                         });
+                    }
 
-                        //////////////////////////////////////////
-                        //<!-- FIN LIKE DISLIKE DE PUBLICACIONES -->
-                        //////////////////////////////////////////
+                    //CAMBIAR LOS COLORES DEL BOTON
+                    function BotonLikeUpdate(btn, isActive, activeClass, inactiveClass) {
+                        btn.classList.toggle(activeClass, isActive);
+                        btn.classList.toggle(inactiveClass, !isActive);
+                    }
 
+                    //PODEMOS CAMBIARLOS VALORES DE LOS CONTADRES DE LOS LIKES (COMENTRIOS Y POST)
+                    function updateCounter(btn, count) {
+                        var counter = btn.querySelector('.text-sm');
+                        if (counter) {
+                            counter.textContent = count;
+                        }
+                    }
+
+                    //ANIMAR BOTON CUANDO SE LE DA DISLIKE, O SE QUITA LIKE/DISLIKE
+                    function animateButton(btn) {
+                        btn.classList.add('likes-animation');
+                        setTimeout(function() {
+                            btn.classList.remove('likes-animation');
+                        }, 500);
+                    }
+
+                    //ANIMAR EL BOTON CUANDO SE LE DA UNICAMENTE LIKE
+                    function animateLike(btn) {
+                        btn.classList.add('like-animation-absolute');
+                        setTimeout(function() {
+                            btn.classList.remove('like-animation-absolute');
+                        }, 500);
+                    }
+
+
+                    ////////////////////////////////////////////////////////////////////////
+                    //<!-- LIKE DISLIKE DE PUBLICACIONES, FIN DE FUNCIONES REUTILIZABLES -->
+                    ////////////////////////////////////////////////////////////////////////
+
+                    //POST
+                    var likeBtn = document.getElementById('like-btn-{{ post.pk }}');
+                    var dislikeBtn = document.getElementById('dislike-btn-{{ post.pk }}');
+
+
+                    //POST
+                    likeBtn.addEventListener('click', ClicLike);
+                    dislikeBtn.addEventListener('click', ClicDislike);
+
+                    function ClicLike(event) {
+                        event.preventDefault();
+                        AjaxPostCommentLikes("{% url 'social:like' post.pk %}", CambiosLike);
+                    }
+
+                    function ClicDislike(event) {
+                        event.preventDefault();
+                        AjaxPostCommentLikes("{% url 'social:dislike' post.pk %}", CambiosDislike);
+                    }
+
+
+                    function CambiosLike(data) {
+                        BotonLikeUpdate(likeBtn, data.liked, 'text-blue-600', 'text-gray-500');
+                        BotonLikeUpdate(dislikeBtn, !data.disliked, 'text-gray-500', 'text-red-500');
+                        updateCounter(likeBtn, data.like_count);
+                        updateCounter(dislikeBtn, data.dislike_count);
+                        if (data.liked){
+                            animateLike(likeBtn); //funcion de animar
+                        }else{
+                            animateButton(likeBtn); //funcion de animar
+                        }
+                    }
+
+                    function CambiosDislike(data) {
+                        BotonLikeUpdate(dislikeBtn, data.disliked, 'text-red-500', 'text-gray-500');
+                        BotonLikeUpdate(likeBtn, !data.liked, 'text-gray-500', 'text-blue-500');
+                        updateCounter(dislikeBtn, data.dislike_count);
+                        updateCounter(likeBtn, data.like_count);
+                        animateButton(dislikeBtn); //funcion de animar
+                    }
+                    ////////////////////////////////////////////////////////////
+                    //<!-- INICIO DE COMENTARIOS Y FIN DE POST (LIKE DISLIKE)-->
+                    ////////////////////////////////////////////////////////////
+
+                        
+                    //COMENTARIOS
+                    var buttonId;
+                    var url;
+                    var likeBtnCom;
+                    var dislikeBtnCom;
+                function ReloadCommentsLike() {
+                    var likeBtnsCom = document.querySelectorAll('.comment-like-btn');
+                    var dislikeBtnsCom = document.querySelectorAll('.comment-dislike-btn');
+
+                    likeBtnsCom.forEach(function (btn) {
+                    btn.addEventListener('click', function (event) {
+                        url = btn.getAttribute('data-like-url');
+                        buttonId = btn.id;
+                        likeBtnCom = document.getElementById(buttonId);
+                        //Obtener boton dislike
+                        var pk = btn.getAttribute('data-comment-id')
+                        var id = 'dislike-btn-comment-' + pk
+                        dislikeBtnCom = document.getElementById(id);
+                        //enviar funcion prevent default
+                        PreventSend(event, url);
+                        AjaxPostCommentLikes(url, CambiosLikeCom);
+                    });
+                    });
+
+                    dislikeBtnsCom.forEach(function (btn) {
+                    btn.addEventListener('click', function (event) {
+                        url = btn.getAttribute('data-dislike-url');
+                        buttonId = btn.id;
+                        dislikeBtnCom = document.getElementById(buttonId);
+                        //Obtener boton dislike
+                        var pk = btn.getAttribute('data-comment-id')
+                        var id = 'like-btn-comment-' + pk
+                        likeBtnCom = document.getElementById(id);
+                        //Send funtion Prevent default
+                        PreventSend(event, url);
+                        AjaxPostCommentLikes(url, CambiosDislikeCom);
+                    });
+                    });
+                }
+                ReloadCommentsLike();
+
+                    // Función para manejar la soli
+                    function PreventSend(event, url) {
+                        event.preventDefault();
+                        console.log("se ejecuto la funcion correctamente")
+                    }
+
+
+                    function CambiosLikeCom(data) {
+                        BotonLikeUpdate(likeBtnCom, data.liked, 'text-blue-600', 'text-gray-500');
+                        BotonLikeUpdate(dislikeBtnCom, !data.disliked, 'text-gray-500', 'text-red-500');
+                        updateCounter(likeBtnCom, data.like_count);
+                        updateCounter(dislikeBtnCom, data.dislike_count);
+                        if (data.liked){
+                            animateLike(likeBtnCom); //funcion de animar
+                        }else{
+                            animateButton(likeBtnCom); //funcion de animar
+                        }
+                    }
+
+                    function CambiosDislikeCom(data) {
+                        console.log(dislikeBtnCom)
+                        BotonLikeUpdate(dislikeBtnCom, data.disliked, 'text-red-500', 'text-gray-500');
+                        BotonLikeUpdate(likeBtnCom, !data.liked, 'text-gray-500', 'text-blue-500');
+                        updateCounter(dislikeBtnCom, data.dislike_count);
+                        updateCounter(likeBtnCom, data.like_count);
+                        animateButton(dislikeBtnCom); //funcion de animar
+                    }
+
+
+                    //////////////////////////////////////////////////////////////////////
+                    //<!-- ACTUALIZAR COMENTARIOS EN LA VISTA, FIN DE LIKES Y DISLIKES -->
+                    //////////////////////////////////////////////////////////////////////
+                    function AjaxPostCommentActu(url, form, vista) {
+                        fetch(url, {
+                            method: 'POST',
+                            body:new FormData(form),
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}',
+                            }
+                        }).then(
+                            function(response) {
+                                return response.json();
+                            }
+                        ).then(vista);
+                    }
+
+
+                    //////////////////////////////////////////////////////////////////////
+                    //<!-- ACTUALIZAR COMENTARIOS EN LA VISTA, FIN DE CODGO REUTILIZABLE -->
+                    //////////////////////////////////////////////////////////////////////
+
+                    //reply comment
+                    var divContBoxComReply
+
+                    function ReloadCommentsBox(){
+                        var CommentBtnsReply = document.querySelectorAll('.CommentReplyAllBtn')
+                        CommentBtnsReply.forEach(function (btn) {
+                        btn.addEventListener('click', function (event) {
+                            url = btn.getAttribute('data-reply-comment');
+                            event.preventDefault(); // Evita el comportamiento predeterminado del botón de envío del formulario
+                            var formID = btn.getAttribute('formCommentID');
+                            var form= document.getElementById(formID);
+                            console.log(form, )
+                            var DivIdReply = btn.getAttribute('DivReply')
+                            console.log(DivIdReply)
+                            divContBoxComReply = document.getElementById(DivIdReply);
+                            console.log(divContBoxComReply)
+                            AjaxPostCommentActu(url, form, UpdateBoxCommentReply);
+                        });
+                        });
+                    };
+                    ReloadCommentsBox()
+
+                    //comment Principal
+                    var ComBtn = document.getElementById('PrincipalComment');
+                    ComBtn.addEventListener('click', ComEvent);
+
+                    function ComEvent(event) {
+                        event.preventDefault(); // Evita el comportamiento predeterminado del botón de envío del formulario
+                        var divContBoxCom = document.getElementById('box-comment');
+                        // Desactivar el botón
+                        ComBtn.disabled = true;
+                        var form= document.getElementById("formComment");
+                        AjaxPostCommentActu("{% url 'social:post-detail' post.pk %}", form, UpdateBoxComment);
+                        //comment-holderPrincipal ---> CASILLA PRINCIPAL DE ESCRIBIR
+                    };
+
+
+                    //actualizar contenidos
+
+                    function UpdateBoxCommentReply(data){
+                            // Crear un nuevo elemento div
+                            var nuevoDiv = document.createElement('div');
+                            nuevoDiv.classList.add('flex', 'space-x-2');// Agregar las clases al nuevo div
+                            nuevoDiv.innerHTML = data.html_generado;// Establecer el contenido HTML del nuevo div
+                            //divContBoxCom.appendChild(nuevoDiv);//podriamos agregar el div al documento pero queremos que salga antes.entonces...
+                            console.log(divContBoxComReply)
+                            var primerHijo = divContBoxComReply.firstChild;// Obtener la referencia al primer hijo de divContBoxCom
+                            divContBoxComReply.insertBefore(nuevoDiv, primerHijo);//insertar div al inicio del todo
+
+                            //vaciar input
+                            var idInputComment = document.getElementById('comment-holderPrincipal');
+                            idInputComment.value = "";
+                            ReloadCommentsLike();//actualizar comentarios likes de la publicacion
+                            ReloadCommentsBox();//actualizar comentarios de la publicacion
+                    }
+
+                    function UpdateBoxComment(data){
+                            ComBtn.disabled = false;
+                            var divContBoxCom = document.getElementById('box-comment');
+                            // Crear un nuevo elemento div
+                            var nuevoDiv = document.createElement('div');
+                            nuevoDiv.classList.add('flex', 'space-x-2');// Agregar las clases al nuevo div
+                            nuevoDiv.innerHTML = data.html_generado;// Establecer el contenido HTML del nuevo div
+                            //divContBoxCom.appendChild(nuevoDiv);//podriamos agregar el div al documento pero queremos que salga antes.entonces...
+                            var primerHijo = divContBoxCom.firstChild;// Obtener la referencia al primer hijo de divContBoxCom
+                            divContBoxCom.insertBefore(nuevoDiv, primerHijo);//insertar div al inicio del todo
+
+                            //vaciar input
+                            var idInputComment = document.getElementById('comment-holderPrincipal');
+                            idInputComment.value = "";
+                            ReloadCommentsLike();//actualizar comentarios de la publicacion
+                            ReloadCommentsBox()
+                    }
+
+                    ////////////////////////////////////////////////////////////////////////////
+                    //<!-- //FIN DEL DOCUMENTO SCRIPT - (CLARO SOLO DE PUBLICACIONES DETAIL) -->
+                    ///////////////////////////////////////////////////////////////////////////
+            });
                     </script>
 
                     <style>
-                        .like-animation {
+                        .likes-animation {
+                                    animation: likesAnimation 0.5s;
+                                }
+
+                                @keyframes likesAnimation {
+                                    0% {
+                                        transform: scale(1);
+                                    }
+                                    50% {
+                                        transform: scale(1.05);
+                                    }
+                                    100% {
+                                        transform: scale(1);
+                                    }
+                        }
+                        .like-animation-absolute {
                                     animation: likeAnimation 0.5s;
                                 }
 
                                 @keyframes likeAnimation {
                                     0% {
                                         transform: scale(1);
+                                        transform: rotate(0deg);
+                                    }
+                                    25%{
+                                        transform: rotate(-20deg);
                                     }
                                     50% {
-                                        transform: scale(1.2);
+                                        transform: rotate(-21deg);
+                                        transform: scale(1.5); 
                                     }
                                     100% {
                                         transform: scale(1);
+                                        transform: rotate(0deg);
                                     }
-                                }
+                        }
                     </style>
                     
 
 
-                    <div @click="open = true" class="w-auto flex justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl py-2 rounded-lg cursor-pointer text-gray-500 dark:text-dark-txt h-10">
+                    <div @click="open = true" class="w-auto flex justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-gray-500 dark:text-dark-txt h-10">
                         <i class='bx bx-comment'></i>
-                        <span class="text-sm font-semibold mx-2"> Nuevo</span>
+                        <p class="text-sm font-semibold pl-2 mb-1">{{ comments.count }}
+                        </p>
                     </div>
                     
 
@@ -325,11 +545,11 @@
                                 
                                 <div class="mt-3 text-center sm:mt-5">
                                     <h3 class="text-lg leading-6 font-medium dark:text-dark-txt text-gray-900" id="modal-title">
-                                    Comment Something
+                                    Haz tu comentario!
                                     </h3>
                                     <div class="mt-2">
                                     <p class="text-sm dark:text-dark-txt text-gray-500">
-                                        Share you thoughts on this post
+                                        Comparte lo que piensas en este post!
                                     </p>
                                     </div>
                                 </div>
@@ -338,17 +558,12 @@
                             <div class="grid grid-cols-3">
 
                                 <div class="mt-5 sm:mt-6 ">
-                                    {% comment %} <label class="block text-sm font-medium dark:text-dark-txt text-gray-700">
-                                        Body
-                                    </label> {% endcomment %}
-                                    <form method="POST" class="inline-flex">
+                                    <form method="POST" id="formComment" class="inline-flex">
                                         {% csrf_token %}
                                         {{form.comment}}
-                                        <div class="block">
-                                            <button type="submit" class="inline-flex items-center ml-1 px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                            Post
-                                            </button>
-                                        </div>
+                                        <button id="PrincipalComment" @click="open = false" type="submit" class="inline-flex items-center ml-1 px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            PUBLICAR
+                                        </button>
                                     </form>
                                     
 
@@ -364,10 +579,6 @@
                     </div>
                     <!-- COMMENT POST MODAL -->
 
-
-
-                    
-
                 </div>
             </div>
         </div>
@@ -375,161 +586,202 @@
 
 
         <!-- LIST COMMENT -->
-        <div class="py-2 px-4 max-w-full">
+        <div id="box-comment" class="py-2 px-4 max-w-full">
             <!-- COMMENT -->
+
+
+        <!--scroll-->
+        <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+        <script>
+            AOS.init();
+        </script>
+    <!---->
             {% for comment in comments %}
             {% if comment.is_parent %}
             <div class="flex space-x-2">
                 <a href="{% url 'users:profile' comment.author.username %}">
-                <img src="{{comment.author.profile.picture.url}}" alt="Profile picture" class="w-9 h-9 rounded-full">
-                </a>
-                <div>
-                    <div class="bg-gray-100 dark:bg-dark-third p-2 rounded-2xl text-sm">
-                        
-                        <a href="{% url 'users:profile' username=post.author.username %}" class="font-semibold block hover:text-blue-500 dark:text-dark-txt"><p>{{comment.author}}</p></a>
-                        
-                        <span class="dark:text-dark-txt">{{comment.comment}}</span>
-                        <span class="text-xs dark:text-dark-txt text-gray-500 float-right">{{comment.created_on | naturaltime}}</span>
-                    </div>
-                    
-
-                    <div x-data="{open:false}" class=" text-xs text-gray-500 dark:text-dark-txt">
-                        {% if request.user == comment.author %}
-                            <a href="{% url 'social:comment-edit' post.pk comment.pk %}" class="font-semibold cursor-pointer">Edit</a>
-                            <span>.</span>
-                            <a href="{% url 'social:comment-delete' post.pk comment.pk %}" class="font-semibold cursor-pointer">Delete</a>
+                    <img src="{{comment.author.profile.picture.url}}" alt="Profile picture" class="w-9 h-9 rounded-full">
+                    </a>
+                    <div>
+                        <div class="bg-gray-100 dark:bg-dark-third p-2 rounded-2xl text-sm">
                             
-                        {% endif %}
-                        <form method="POST" action="{% url 'social:comment-like' post.pk comment.pk %}" class="pl-2 inline-flex">
-                            {% csrf_token %}
-                            <input type="hidden" name="next" value="{{request.path}}">
-                            <button type="submit" class=" flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xs py-2 rounded-lg cursor-pointer text-gray-500 dark:text-dark-txt">
-                                <i class='bx bx-like'></i><span>{{comment.likes.all.count}}</span>
-                                <p class="text-sm font-semibold"></p>
-                            </button> 
-                        </form>
-
-                        <form method="POST" action="{% url 'social:comment-dislike' post.pk comment.pk %}" class=" inline-flex">
-                            {% csrf_token %}
-                            <input type="hidden" name="next" value="{{request.path}}">
-                            <button type="submit" class=" flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xs py-2 rounded-lg cursor-pointer text-gray-500 dark:text-dark-txt">
-                                <i class='bx bx-dislike'></i><span>{{comment.dislikes.all.count}}</span>
-                                <p class="text-sm font-semibold"></p>
-                            </button> 
-                        </form>
-
-
-                        <button @click="open = true" class="inline-flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xs py-2 rounded-lg cursor-pointer text-gray-500 dark:text-dark-txt">
-                        <i class='mr-2 bx bx-comment'></i>
-                         Reply
-                        </button>
-
-                        <!-- This example requires Tailwind CSS v2.0+ -->
-                        <div x-show="open" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click.away="open = false" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-
-                                <div x-show="open" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" x-description="Background overlay, show/hide based on modal state." class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="open = false" aria-hidden="true"></div>
-
-
-                                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-                                <div class="inline-block align-bottom dark:bg-dark-second dark:text-dark-txt bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
-                                <div>
-                                    
-                                    <div class="mt-3 text-center sm:mt-5">
-                                    <h3 class="text-lg leading-6 font-medium dark:text-dark-txt text-gray-900" id="modal-title">
-                                        Reply to Comment
-                                    </h3>
-                                    <div class="mt-2">
-                                        <p class="text-sm text-gray-500 dark:text-dark-txt">
-                                        Write your comment reply and click on post.
-                                        </p>
-                                    </div>
-                                    
-                                    <div class="mt-5 sm:mt-6 ">
-                                    {% comment %} <label class="block text-sm font-medium dark:text-dark-txt text-gray-700">
-                                        Body
-                                    </label> {% endcomment %}
-                                    <form method="POST" action="{% url 'social:comment-reply' post.pk comment.pk %}" class="inline-flex">
-                                        {% csrf_token %}
-                                        {{form.comment}}
-                                        <div class="block">
-                                            <button type="submit" class="inline-flex items-center ml-1 px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                            Post
-                                            </button>
-                                        </div>
-                                    </form>
-                                    
-
-                                </div>
-
-                                    </div>
-                                </div>
-                                <div class="mt-5 sm:mt-6">
-                                    <button @click="open = false" type="button" class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm">
-                                    Return
-                                    </button>
-                                </div>
-                                </div>
-                            </div>
+                            <a href="{% url 'users:profile' username=post.author.username %}" class="font-semibold block hover:text-blue-500 dark:text-dark-txt"><p>{{comment.author}}</p></a>
+                            
+                            <span class="dark:text-dark-txt">{{comment.comment}}</span>
+                            <span class="text-xs dark:text-dark-txt text-gray-500 float-right">{{comment.created_on | naturaltime}}</span>
                         </div>
-
                         
-                        
-                    </div>
-                    
-                    <!-- REPLY COMMENT -->
-                    {% for child_comment in comment.children %}
-                    <div class="flex space-x-2">
-                        <a href="{% url 'users:profile' comment.author.username %}">
-                        <img src="{{child_comment.author.profile.picture.url}}" alt="Profile picture" class="w-9 h-9 rounded-full">
-                        </a>
-                        <div>
-                            <div class="bg-gray-100 dark:bg-dark-third p-2 rounded-2xl text-sm">
-                                <a href="{% url 'users:profile' username=post.author.username %}" class="font-semibold block hover:text-blue-500 dark:text-dark-txt"><p>{{child_comment.author}}</p></a>
-                                <span class="dark:text-dark-txt">{{child_comment.comment}}</span>
-                            <span class="text-xs dark:text-dark-txt text-gray-500 float-right">{{child_comment.created_on | naturaltime}}</span>
-                            </div>
-                            <div class="p-2 text-xs text-gray-500 dark:text-dark-txt">
-                                {% if request.user == child_comment.author %}
-                                    <a href="{% url 'social:comment-edit' post.pk child_comment.pk %}" class="font-semibold cursor-pointer">Edit</a>
-                                    <span>.</span>
-                                    <a href="{% url 'social:comment-delete' post.pk child_comment.pk %}" class="font-semibold cursor-pointer">Delete</a>
-                                    
+                
+                        <div x-data="{open:false}" class=" text-xs text-gray-500 dark:text-dark-txt">
+                            {% if request.user == comment.author %}
+                                <a href="{% url 'social:comment-edit' post.pk comment.pk %}" class="font-semibold cursor-pointer text-sm text-green-500">
+                                    <!--edit comment-->
+                                    <i class="bx bx-edit w-5" ></i>
+                                </a>
+                                <a href="{% url 'social:comment-delete' post.pk comment.pk %}" class="font-semibold cursor-pointer text-sm text-red-500">
+                                    <!-- delete comment-->
+                                    <i class="bx bx-trash" ></i>
+                                </a>
+                                
+                            {% endif %}
+                            <form method="POST" action="{% url 'social:comment-like' post.pk comment.pk %}" class="pl-2 inline-flex">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{request.path}}">
+                
+                                <!--BOTON DE COMENTARIOS APRA DAR LIKE -->
+                                {% if request.user in comment.likes.all %}
+                                    <button id="like-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-like-url="{% url 'social:comment-like' post.pk comment.pk %}" type="submit" class="comment-like-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-blue-600  flex space-x-2 justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-blue-600">
+                                {% else %}   
+                                    <button id="like-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-like-url="{% url 'social:comment-like' post.pk comment.pk %}" type="submit" class="comment-like-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-black-600 "> 
                                 {% endif %}
-                                <form method="POST" action="{% url 'social:comment-like' post.pk child_comment.pk %}" class="pl-2 inline-flex">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="next" value="{{request.path}}">
-                                    <button type="submit" class=" flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xs py-2 rounded-lg cursor-pointer text-gray-500 dark:text-dark-txt">
-                                        <i class='bx bx-like'></i><span>{{child_comment.likes.all.count}}</span>
-                                        <p class="text-sm font-semibold"></p>
-                                    </button> 
-                                </form>
+                                <i class='bx bx-like'></i><p class="text-sm font-semibold">{{comment.likes.all.count}}</p>
+                                </button>
+                            </form>
+                
+                            <form method="POST" action="{% url 'social:comment-dislike' post.pk comment.pk %}" class="pl-2 inline-flex">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{request.path}}">
+                
+                                <!--BOTON DE COMENTARIOS APRA DAR DISLIKE -->
+                                {% if request.user in comment.dislikes.all %}
+                                    <button id="dislike-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-dislike-url="{% url 'social:comment-dislike' post.pk comment.pk %}" type="submit" class="comment-dislike-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-blue-600  flex space-x-2 justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-red-500">
+                                {% else %}   
+                                    <button id="dislike-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-dislike-url="{% url 'social:comment-dislike' post.pk comment.pk %}" type="submit" class="comment-dislike-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-black-600 "> 
+                                {% endif %}
+                                <i class='bx bx-dislike'></i><p class="text-sm font-semibold">{{comment.dislikes.all.count}}</p>
+                                </button>
+                            </form>
+                
+                
+                            <button @click="open = true" class="inline-flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-gray-500 dark:text-dark-txt">
+                            <i class='ml-2 bx bx-comment'></i><p class="text-sm font-semibold">{{ comment.children.count }}
+                            </p>
+                            </button>
 
-                                <form method="POST" action="{% url 'social:comment-dislike' post.pk child_comment.pk %}" class=" inline-flex">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="next" value="{{request.path}}">
-                                    <button type="submit" class=" flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xs py-2 rounded-lg cursor-pointer text-gray-500 dark:text-dark-txt">
-                                        <i class='bx bx-dislike'></i><span>{{child_comment.dislikes.all.count}}</span>
-                                        <p class="text-sm font-semibold"></p>
-                                    </button> 
-                                </form>
-
+                            <!-- This example requires Tailwind CSS v2.0+ -->
+                            <div x-show="open" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click.away="open = false" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                                <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                
+                                    <div x-show="open" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" x-description="Background overlay, show/hide based on modal state." class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="open = false" aria-hidden="true"></div>
+                
+                
+                                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                
+                                    <div class="inline-block align-bottom dark:bg-dark-second dark:text-dark-txt bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
+                                    <div>
+                                        
+                                        <div class="mt-3 text-center sm:mt-5">
+                                        <h3 class="text-lg leading-6 font-medium dark:text-dark-txt text-gray-900" id="modal-title">
+                                            Responde a un comentario!
+                                        </h3>
+                                        <div class="mt-2">
+                                            <p class="text-sm text-gray-500 dark:text-dark-txt">
+                                            Que opinas de este comentario? <br>
+                                            Recuerda que tu conducta tiene consecuenias.
+                                            </p>
+                                        </div>
+                                        
+                                        <div class="mt-5 sm:mt-6 ">
+                                        {% comment %} <label class="block text-sm font-medium dark:text-dark-txt text-gray-700">
+                                            Body
+                                        </label> {% endcomment %}
+                                        <form method="POST" id="formulario-{{comment.pk}}" action="{% url 'social:comment-reply' post.pk comment.pk %}" class="inline-flex flex-col">
+                                            {% csrf_token %}
+                                            {{form.comment}}
+                                            <div class="block mt-2">
+                                                <button @click="open = false" formCommentID="formulario-{{comment.pk}}" DivReply="comment-children-{{ comment.pk }}" data-reply-comment="{% url 'social:comment-reply' post.pk comment.pk %}" id="{{comment.pk}}" type="submit" class="CommentReplyAllBtn inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm">
+                                                    PUBLICAR
+                                                </button>
+                                                <a @click="open = false" type="button" class="mtinline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm mt-2">
+                                                    SALIR
+                                                </a>
+                                            </div>
+                                        </form>
+                                        
+                                    </div>
+                
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
                             </div>
+                
+                            
+                            
                         </div>
-                    </div> 
+                        
+                        <!-- REPLY COMMENT -->
+                        <div id="comment-children-{{ comment.pk }}">
+                        {% for comment in comment.children %}
+                        
+                        <div class="flex space-x-2" >
+                            <a href="{% url 'users:profile' comment.author.username %}">
+                            <img src="{{comment.author.profile.picture.url}}" alt="Profile picture" class="w-9 h-9 rounded-full">
+                            </a>
+                            <div>
+                                <div class="bg-gray-100 dark:bg-dark-third p-2 rounded-2xl text-sm">
+                                    <a href="{% url 'users:profile' username=post.author.username %}" class="font-semibold block hover:text-blue-500 dark:text-dark-txt"><p>{{comment.author}}</p></a>
+                                    <span class="dark:text-dark-txt">{{comment.comment}}</span>
+                                <span class="text-xs dark:text-dark-txt text-gray-500 float-right">{{comment.created_on | naturaltime}}</span>
+                                </div>
+                                <div class="p-2 text-xs text-gray-500 dark:text-dark-txt">
+                                    {% if request.user == comment.author %}
+                                        <a href="{% url 'social:comment-edit' post.pk comment.pk %}" class="font-semibold cursor-pointer text-sm text-green-500">
+                                            <!--edit comment-->
+                                            <i class="bx bx-edit w-5" ></i>
+                                        </a>
+                                        <a href="{% url 'social:comment-delete' post.pk comment.pk %}" class="font-semibold cursor-pointer text-sm text-red-500">
+                                            <!-- delete comment-->
+                                            <i class="bx bx-trash" ></i>
+                                        </a>
+                                    {% endif %}
+                
+                                    <form method="POST" class="pl-2 inline-flex">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="next" value="{{request.path}}">
+                
+                                        <!--BOTON DE COMENTARIOS APRA DAR LIKE -->
+                                        {% if request.user in comment.likes.all %}
+                                            <button id="like-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-like-url="{% url 'social:comment-like' post.pk comment.pk %}" type="submit" class="comment-like-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-blue-600  flex space-x-2 justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-blue-600">
+                                        {% else %}   
+                                            <button id="like-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-like-url="{% url 'social:comment-like' post.pk comment.pk %}" type="submit" class="comment-like-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-black-600ss "> 
+                                        {% endif %}
+                                        <i class='bx bx-like'></i><p class="text-sm font-semibold">{{comment.likes.all.count}}</p>
+                                        </button>
+                                    </form>
+                
+                
+                                    <form method="POST" action="{% url 'social:comment-dislike' post.pk comment.pk %}" class="pl-2 inline-flex">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="next" value="{{request.path}}">
+                
+                                        <!--BOTON DE COMENTARIOS APRA DAR DISLIKE -->
+                                        {% if request.user in comment.dislikes.all %}
+                                            <button id="dislike-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-dislike-url="{% url 'social:comment-dislike' post.pk comment.pk %}" type="submit" class="comment-dislike-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-blue-600  flex space-x-2 justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-red-500">
+                                        {% else %}   
+                                            <button id="dislike-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-dislike-url="{% url 'social:comment-dislike' post.pk comment.pk %}" type="submit" class="comment-dislike-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-black-600ss "> 
+                                        {% endif %}
+                                        <i class='bx bx-dislike'></i><p class="text-sm font-semibold">{{comment.dislikes.all.count}}</p>
+                                        </button>
+                                    </form>
+                
+                                </div>
+                            </div>
+                        </div> 
+                        
                     {% endfor %}
-                     
-                    <!-- END REPLY COMMENT -->
-
-                </div>
+                    </div>    
+                        <!-- END REPLY COMMENT -->
+                    </div>
             </div>
             {% endif %}
             {% endfor %}
-            
             <!-- END COMMENT -->
 
         </div>
+    </div>
+
         <!-- END LIST COMMENT -->
    
 

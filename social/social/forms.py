@@ -30,7 +30,8 @@ class SocialCommentForm(forms.ModelForm):
         widget=forms.Textarea(attrs={
             'class': 'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-dark-third dark:border-dark-third dark:text-dark-txt flex max-w-full sm:text-sm border-gray-300 rounded-md block',
             'rows': '1',
-            'placeholder': 'Comment Something...'
+            'placeholder': 'Comment Something...',
+            'id': 'comment-holderPrincipal'
             }),
         required=True
         )

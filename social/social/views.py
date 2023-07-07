@@ -9,6 +9,10 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import timezone
 from users.models import Profile
 from django.http import JsonResponse
+import json
+
+#crear un html desde la vista
+from django.template import loader
 
 from django.db.models import Q #importar datos de la base de datos
 import time
@@ -62,7 +66,6 @@ class PostDetailView(LoginRequiredMixin, View):
         activate('es')  # Establece el contexto de traducción en español
         post = SocialPost.objects.get(pk=pk)
         form = SocialCommentForm(request.POST)
-
         if form.is_valid():
             new_comment = form.save(commit=False)
             new_comment.author = request.user
@@ -75,16 +78,29 @@ class PostDetailView(LoginRequiredMixin, View):
             Notification(userde, userpara, context, ver, request)
             ###########################
             new_comment.save()
+        else:
+            print(form.errors," ERROR EN LA SOLICITUD DE INTRODUCIR DATOS A LA BASE DE DATOS")
 
-        comments = SocialComment.objects.filter(post=post).order_by('-created_on')
-
+        comment = SocialComment.objects.filter(pk=new_comment.pk).order_by('-created_on')#comentario creado
         context = {
             'post': post,
             'form': form,
-            'comments':comments
+            'comments':comment
         }
 
-        return render(request, 'pages/social/detail.html', context)
+        html = render(request, 'pages/social/comment_ajax.html', context)
+        #print(html) --> TENEMOS EL DOCUEMNTO HTML CORRECTAMENTE!
+
+        comments = SocialComment.objects.filter(post=post).order_by('-created_on')
+        comments_data = [{'text': comment.comment, 'author': comment.author.username} for comment in comments]
+        html_content = html.content.decode('utf-8')  # Obtener el contenido HTML como una cadena
+        #print(html_content) --> LITERALMENTE EL HTML QUE NECESITAMOS RESPONDER!
+
+        response_data = {
+            'comments': comments_data,
+            'html_generado': html_content,
+        }
+        return JsonResponse(response_data)
 
 
 
@@ -156,11 +172,9 @@ class AddLike(LoginRequiredMixin, View):
         #variable para contar dislikes
         dislike_count = post.dislikes.count()
 
-        info = 'like' #esto se hace para que en el java script podamos ahcer todo desde una funcion y no desde dos diferentes 
 
         # Construir la respuesta en formato JSON
         response_data = {
-            'info': info,
             'liked': not is_like,
             'like_count': like_count,
             #dislike count
@@ -204,11 +218,9 @@ class AddDislike(LoginRequiredMixin, View):
         like_count = post.likes.count()
 
 
-        info = 'dislike' #esto se hace para que en el java script podamos ahcer todo desde una funcion y no desde dos diferentes 
 
         # Construir la respuesta en formato JSON
-        response_data = {
-            'info': info,
+        response_data1 = {
             'disliked': not is_dislike,
             'dislike_count': dislike_count,
             #like coun
@@ -216,7 +228,7 @@ class AddDislike(LoginRequiredMixin, View):
         }
 
         # Devolver la respuesta JSON
-        return JsonResponse(response_data)
+        return JsonResponse(response_data1)
 
 
 
@@ -226,22 +238,22 @@ class AddCommentLike(LoginRequiredMixin, View):
         comment = SocialComment.objects.get(pk=pk)
         post = comment.post
 
-        is_dislike = False
+        is_dislikeCom = False
         for dislike in comment.dislikes.all():
             if dislike == request.user:
-                is_dislike = True
+                is_dislikeCom = True
                 break
 
-        if is_dislike:
+        if is_dislikeCom:
             comment.dislikes.remove(request.user)
 
-        is_like = False
+        is_likeCom = False
         for like in comment.likes.all():
             if like == request.user:
-                is_like = True
+                is_likeCom = True
                 break
         
-        if not is_like:
+        if not is_likeCom:
             userde = request.user##
             userpara = comment.author
             ver = post.pk
@@ -249,11 +261,24 @@ class AddCommentLike(LoginRequiredMixin, View):
             Notification(userde, userpara, context, ver, request)##
             comment.likes.add(request.user)
 
-        if is_like:
+        if is_likeCom:
             comment.likes.remove(request.user)
 
-        next = request.POST.get('next', '/')
-        return HttpResponseRedirect(next)
+        comment_dislike_count = comment.dislikes.count()
+
+        #contar los likes poara retornar al javascript
+        comment_like_count = comment.likes.count()
+
+        
+        # Construir la respuesta en formato JSON
+        response_data_Com = {
+            'dislike_count': comment_dislike_count,
+            'like_count': comment_like_count,
+            'liked': not is_likeCom,
+        }
+        #json_data = json.dumps(response_data_Com)
+        #print(json_data)
+        return JsonResponse(response_data_Com)
 
 
 class AddCommentDislike(LoginRequiredMixin, View):
@@ -261,29 +286,38 @@ class AddCommentDislike(LoginRequiredMixin, View):
         activate('es')  # Establece el contexto de traducción en español
         comment = SocialComment.objects.get(pk=pk)
 
-        is_like = False
+        is_likeCom = False
         for like in comment.likes.all():
             if like == request.user:
-                is_like = True
+                is_likeCom = True
                 break
 
-        if is_like:
+        if is_likeCom:
             comment.likes.remove(request.user)
 
-        is_dislike = False
+        is_dislikeCom = False
         for dislike in comment.dislikes.all():
             if dislike == request.user:
-                is_dislike = True
+                is_dislikeCom = True
                 break
 
-        if not is_dislike:
+        if not is_dislikeCom:
             comment.dislikes.add(request.user)
 
-        if is_dislike:
+        if is_dislikeCom:
             comment.dislikes.remove(request.user)
 
-        next = request.POST.get('next', '/')
-        return HttpResponseRedirect(next)
+        # Construir la respuesta en formato JSON
+        comment_dislike_count = comment.dislikes.count()
+
+        #contar los likes poara retornar al javascript
+        comment_like_count = comment.likes.count()
+        response_data_Com = {
+            'dislike_count': comment_dislike_count,
+            'like_count': comment_like_count,
+            'disliked': not is_dislikeCom,
+        }
+        return JsonResponse(response_data_Com)
         
 
 class CommentReplyView(LoginRequiredMixin, View):
@@ -292,7 +326,7 @@ class CommentReplyView(LoginRequiredMixin, View):
         post=SocialPost.objects.get(pk=post_pk)
         parent_comment = SocialComment.objects.get(pk=pk)
         form=SocialCommentForm(request.POST)
-
+        print(form.is_valid, "AAAAAAAAAAAAAA")
         if form.is_valid():
             new_comment = form.save(commit=False)
             new_comment.author = request.user
@@ -313,7 +347,26 @@ class CommentReplyView(LoginRequiredMixin, View):
             ###########################
             new_comment.save()
 
-        return redirect('social:post-detail', pk=post_pk)
+        comment = SocialComment.objects.filter(pk=new_comment.pk).order_by('-created_on')#comentario creado
+        context = {
+            'post': post,
+            'form': form,
+            'comments':comment
+        }
+        html = render(request, 'pages/social/comment_ajax_reply.html', context)
+        #print(html) --> TENEMOS EL DOCUEMNTO HTML CORRECTAMENTE!
+
+        comments = SocialComment.objects.filter(post=post).order_by('-created_on')
+        comments_data = [{'text': comment.comment, 'author': comment.author.username} for comment in comments]
+        html_content = html.content.decode('utf-8')  # Obtener el contenido HTML como una cadena
+        #print(html_content) --> LITERALMENTE EL HTML QUE NECESITAMOS RESPONDER!
+        print(html_content)
+
+        response_data = {
+            'comments': comments_data,
+            'html_generado': html_content,
+        }
+        return JsonResponse(response_data)
 
 
 class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):

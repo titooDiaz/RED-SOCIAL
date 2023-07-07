@@ -1,0 +1,57 @@
+{% load humanize %}
+{% for comment in comments %}
+            <a href="{% url 'users:profile' comment.author.username %}">
+            <img src="{{comment.author.profile.picture.url}}" alt="Profile picture" class="w-9 h-9 rounded-full">
+            </a>
+            <div>
+                <div class="bg-gray-100 dark:bg-dark-third p-2 rounded-2xl text-sm">
+                    <a href="{% url 'users:profile' username=post.author.username %}" class="font-semibold block hover:text-blue-500 dark:text-dark-txt"><p>{{comment.author}}</p></a>
+                    <span class="dark:text-dark-txt">{{comment.comment}}</span>
+                <span class="text-xs dark:text-dark-txt text-gray-500 float-right">{{comment.created_on | naturaltime}}</span>
+                </div>
+                <div class="p-2 text-xs text-gray-500 dark:text-dark-txt">
+                    {% if request.user == comment.author %}
+                        <a href="{% url 'social:comment-edit' post.pk comment.pk %}" class="font-semibold cursor-pointer text-sm text-green-500">
+                            <!--edit comment-->
+                            <i class="bx bx-edit w-5" ></i>
+                        </a>
+                        <a href="{% url 'social:comment-delete' post.pk comment.pk %}" class="font-semibold cursor-pointer text-sm text-red-500">
+                            <!-- delete comment-->
+                            <i class="bx bx-trash" ></i>
+                        </a>
+                    {% endif %}
+
+                    <form method="POST" class="pl-2 inline-flex">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{request.path}}">
+
+                        <!--BOTON DE COMENTARIOS APRA DAR LIKE -->
+                        {% if request.user in comment.likes.all %}
+                            <button id="like-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-like-url="{% url 'social:comment-like' post.pk comment.pk %}" type="submit" class="comment-like-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-blue-600  flex space-x-2 justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-blue-600">
+                        {% else %}   
+                            <button id="like-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-like-url="{% url 'social:comment-like' post.pk comment.pk %}" type="submit" class="comment-like-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-black-600ss "> 
+                        {% endif %}
+                        <i class='bx bx-like'></i><p class="text-sm font-semibold">{{comment.likes.all.count}}</p>
+                        </button>
+                    </form>
+
+
+                    <form method="POST" action="{% url 'social:comment-dislike' post.pk comment.pk %}" class="pl-2 inline-flex">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{request.path}}">
+
+                        <!--BOTON DE COMENTARIOS APRA DAR DISLIKE -->
+                        {% if request.user in comment.dislikes.all %}
+                            <button id="dislike-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-dislike-url="{% url 'social:comment-dislike' post.pk comment.pk %}" type="submit" class="comment-dislike-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-blue-600  flex space-x-2 justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-red-500">
+                        {% else %}   
+                            <button id="dislike-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-dislike-url="{% url 'social:comment-dislike' post.pk comment.pk %}" type="submit" class="comment-dislike-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-black-600ss "> 
+                        {% endif %}
+                        <i class='bx bx-dislike'></i><p class="text-sm font-semibold">{{comment.dislikes.all.count}}</p>
+                        </button>
+                    </form>
+
+                </div>
+        </div> 
+    </div>
+    </div>
+{% endfor %}
