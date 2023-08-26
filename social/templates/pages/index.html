@@ -60,22 +60,18 @@
         </div>
 
         <div class="p-2 flex">
-            <div class="w-1/3 flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl sm:text-3xl py-2 rounded-lg cursor-pointer text-yellow-500">
-                <a href="{% url 'social:ControlPost' %}">
-                    <i class='bx bxs-angry'></i>
-                    <span class="text-xs sm:text-sm font-semibold text-gray-500 dark:text-dark-txt">Pendientes</span>
-                </a>
-            </div>
-            <div class="w-1/3 flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl sm:text-3xl py-2 rounded-lg cursor-pointer text-red-500">
-                <a href="{% url 'social:ControlReports' %}">
-                    <i class='bx bx-block'></i>
-                    <span class="text-xs sm:text-sm font-semibold text-gray-500 dark:text-dark-txt">Reportes</span>
-                </a>
-            </div>
-            <div class="w-1/3 flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl sm:text-3xl py-2 rounded-lg cursor-pointer text-yellow-500">
-                <i class='bx bx-smile'></i>
-                <span class="text-xs sm:text-sm font-semibold text-gray-500 dark:text-dark-txt">Mensajes</span>
-            </div>
+            <a href="#" class="w-1/3 flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl py-2 rounded-lg cursor-pointer text-gray-500 dark:text-dark-txt">
+                <i class='bx bx-share bx-flip-horizontal'></i>
+                <span class="text-sm font-semibold">Mirar</span>
+            </a>
+            <a href="#" class="w-1/3 flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl py-2 rounded-lg cursor-pointer text-gray-500 dark:text-dark-txt">
+                <i class='bx bx-share bx-flip-horizontal'></i>
+                <span class="text-sm font-semibold">Mirar</span>
+            </a>
+            <a href="#" class="w-1/3 flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl py-2 rounded-lg cursor-pointer text-gray-500 dark:text-dark-txt">
+                <i class='bx bx-share bx-flip-horizontal'></i>
+                <span class="text-sm font-semibold">Mirar</span>
+            </a>
         </div>
     {% endif %}
 
@@ -226,126 +222,28 @@
         {% endif %}
         <!-- END POST IMAGE -->
 
-        <!-- POST REACT -->
-        <div class="px-4 py-2">
-            <div class="flex items-center justify-between">
-                <div class="flex flex-row-reverse items-center">
-                    <span class="ml-2 text-gray-500 dark:text-dark-txt">999</span>
-                    <span class="rounded-full grid place-items-center text-2xl -ml-1 text-red-800">
-                        <i class='bx bxs-angry'></i>
-                    </span>
-                    <span class="rounded-full grid place-items-center text-2xl -ml-1 text-red-500">
-                        <i class='bx bxs-heart-circle'></i>
-                    </span>
-                    <span class="rounded-full grid place-items-center text-2xl -ml-1 text-yellow-500">
-                        <i class='bx bx-happy-alt'></i>
-                    </span>
-                </div>
-                <div class="text-gray-500 dark:text-dark-txt">
-                    <span>90 comments</span>
-                    <span>66 Shares</span>
-                </div>
-            </div>
-        </div>
-        <!-- END POST REACT -->
-
         <!-- POST ACTION -->
         <div class="py-2 px-4">
             <div class="border border-gray-200 dark:border-dark-third border-l-0 border-r-0 py-1">
                 <div class="flex space-x-2">
                     <div class="w-1/3 flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl py-2 rounded-lg cursor-pointer text-gray-500 dark:text-dark-txt">
                         <i class='bx bx-like'></i>
-                        <span class="text-sm font-semibold">Like</span>
+                        <span class="text-sm font-semibold"> {{post.likes.count}} Likes</span>
                     </div>
                     <div class="w-1/3 flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl py-2 rounded-lg cursor-pointer text-gray-500 dark:text-dark-txt">
                         <i class='bx bx-comment'></i>
-                        <span class="text-sm font-semibold">Comment</span>
+                        <span class="text-sm font-semibold">{{ post.socialcomment_set.all.count }} Comentarios</span>
                     </div>
-                    <div class="w-1/3 flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl py-2 rounded-lg cursor-pointer text-gray-500 dark:text-dark-txt">
+                    <a href="{% url 'social:post-detail' post.pk %}" class="w-1/3 flex space-x-2 justify-center items-center hover:bg-gray-100 dark:hover:bg-dark-third text-xl py-2 rounded-lg cursor-pointer text-gray-500 dark:text-dark-txt">
                         <i class='bx bx-share bx-flip-horizontal'></i>
-                        <span class="text-sm font-semibold">Share</span>
-                    </div>
+                        <span class="text-sm font-semibold">Mirar</span>
+                    </a>
                 </div>
             </div>
         </div>
         <!-- END POST ACTION -->
 
-        {% comment %} <!-- LIST COMMENT -->
-        <div class="py-2 px-4">
-            <!-- COMMENT -->
-            <div class="flex space-x-2">
-                <img src="./images/avt-5.jpg" alt="Profile picture" class="w-9 h-9 rounded-full">
-                <div>
-                    <div class="bg-gray-100 dark:bg-dark-third p-2 rounded-2xl text-sm">
-                        <span class="font-semibold block">John Doe</span>
-                        <span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
-                    </div>
-                    <div class="p-2 text-xs text-gray-500 dark:text-dark-txt">
-                        <span class="font-semibold cursor-pointer">Like</span>
-                        <span>.</span>
-                        <span class="font-semibold cursor-pointer">Reply</span>
-                        <span>.</span>
-                        10m
-                    </div>
-                    <!-- COMMENT -->
-                    <div class="flex space-x-2">
-                        <img src="./images/avt-7.jpg" alt="Profile picture" class="w-9 h-9 rounded-full">
-                        <div>
-                            <div class="bg-gray-100 dark:bg-dark-third p-2 rounded-2xl text-sm">
-                                <span class="font-semibold block">John Doe</span>
-                                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
-                            </div>
-                            <div class="p-2 text-xs text-gray-500 dark:text-dark-txt">
-                                <span class="font-semibold cursor-pointer">Like</span>
-                                <span>.</span>
-                                <span class="font-semibold cursor-pointer">Reply</span>
-                                <span>.</span>
-                                10m
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END COMMENT -->
-                </div>
-            </div>
-            <!-- END COMMENT -->
-            <!-- COMMENT -->
-            <div class="flex space-x-2">
-                <img src="./images/avt-5.jpg" alt="Profile picture" class="w-9 h-9 rounded-full">
-                <div>
-                    <div class="bg-gray-100 dark:bg-dark-third p-2 rounded-2xl text-sm">
-                        <span class="font-semibold block">John Doe</span>
-                        <span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. In voluptate ipsa animi corrupti unde, voluptatibus expedita suscipit, itaque, laudantium accusantium aspernatur officia repellendus nihil mollitia soluta distinctio praesentium nulla eos?</span>
-                    </div>
-                    <div class="p-2 text-xs text-gray-500 dark:text-dark-txt">
-                        <span class="font-semibold cursor-pointer">Like</span>
-                        <span>.</span>
-                        <span class="font-semibold cursor-pointer">Reply</span>
-                        <span>.</span>
-                        10m
-                    </div>
-                    <!-- COMMENT -->
-                    <div class="flex space-x-2">
-                        <img src="./images/avt-7.jpg" alt="Profile picture" class="w-9 h-9 rounded-full">
-                        <div>
-                            <div class="bg-gray-100 dark:bg-dark-third p-2 rounded-2xl text-sm">
-                                <span class="font-semibold block">John Doe</span>
-                                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
-                            </div>
-                            <div class="p-2 text-xs text-gray-500 dark:text-dark-txt">
-                                <span class="font-semibold cursor-pointer">Like</span>
-                                <span>.</span>
-                                <span class="font-semibold cursor-pointer">Reply</span>
-                                <span>.</span>
-                                10m
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END COMMENT -->
-                </div>
-            </div>
-            <!-- END COMMENT -->
-        </div>
-        <!-- END LIST COMMENT -->
+        {% comment %} 
 
         <!-- COMMENT FORM -->
         <div class="py-2 px-4">
