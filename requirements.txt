@@ -15,10 +15,7 @@ certifi==2023.7.22
 cffi==1.15.1
 chardet==5.2.0
 charset-normalizer==3.2.0
-click==8.1.7
-click-didyoumean==0.3.0
-click-plugins==1.1.1
-click-repl==0.3.0
+click==7.1.2
 colorama==0.4.6
 cookiecutter==2.3.0
 crispy-tailwind==0.5.0
@@ -27,9 +24,14 @@ cssselect==1.2.0
 cssutils==2.7.1
 defusedxml==0.7.1
 Django==4.2.5
+Django-Accounts==0.1
 django-allauth==0.56.1
+django-appconf==1.0.5
 django-crispy-forms==2.0
+django-etc==1.4.0
+django-hitcount==1.3.5
 django-tailwind==3.6.0
+django-user-accounts==3.3.0
 dnspython==2.4.2
 ecdsa==0.18.0
 email-validator==1.3.1
@@ -54,7 +56,7 @@ passlib==1.7.4
 Pillow==10.0.0
 pluggy==0.13.1
 premailer==3.10.0
-prompt-toolkit==3.0.39
+psycopg2==2.9.7
 psycopg2-binary==2.9.7
 py==1.11.0
 pyasn1==0.5.0
@@ -81,7 +83,6 @@ sniffio==1.3.0
 SQLAlchemy==1.4.49
 sqlparse==0.4.4
 starlette==0.16.0
-tailwind==3.1.5b0
 tenacity==6.3.1
 text-unidecode==1.3
 typing_extensions==4.7.1
