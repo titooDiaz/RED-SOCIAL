@@ -5,6 +5,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin # si alguien no inicia su cuenta se va al login
 from social.forms import SocialPostForm
 import time
+from users.models import Profile
 
 from social.models import NotificationSocial, SocialPost
 
@@ -46,7 +47,6 @@ class notifications_delete(View):
 class HomeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         activate('es')  # Establece el contexto de traducción en español
-        logged_in_user = request.user
 
         #notificaciones
         SocialNotification = NotificationSocial.objects.filter(para=request.user)
@@ -56,7 +56,30 @@ class HomeView(LoginRequiredMixin, View):
         form = SocialPostForm()
         img=timestamp()
 
+        user = request.user
+        profile = Profile.objects.get(user=user)
+
+        followers = profile.followers.all()
+        follow = profile.followers.all()
+
+        if len(followers) == 0:
+                is_following = False
+            
+        for follower in followers:
+            if follower == request.user:
+                is_following = True
+                break
+            else:
+                is_following = False
+
+        number_of_followers = len(followers)
+
         context = {
+            'user':user,
+            'profile':profile,
+            'number_of_followers': number_of_followers,
+            'is_following': is_following,
+            'follow':follow,
             'img':img,
             'posts':posts,
             'form':form,
