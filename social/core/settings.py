@@ -151,18 +151,13 @@ TEMPLATES = [
 ]
 
 
-############### EJECUTANTO DJANGO CON WSGI ##################
-#(DESPLEGAR CON CALQUIER SERVICIO)
-WSGI_APPLICATION = "core.wsgi.application"
-
-
 #CONFIGURACION PARA POSTGRESQL
 DATABASES = {
     "default": env.db("DATABASE_URL", default="postgres:///PeriodicoCoal"),
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
-
+#pip install argon2-cffi
 PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.Argon2PasswordHasher",
     "django.contrib.auth.hashers.PBKDF2PasswordHasher",
@@ -186,9 +181,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
 
 USE_I18N = True
@@ -208,4 +200,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
+##correo
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'miguelitodiaz169@gmail.com'
+EMAIL_HOST_PASSWORD = 'bxdegfpiqbqksich'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'miguelitodiaz169@gmail.com'
