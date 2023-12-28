@@ -1,8 +1,16 @@
 # RED-SOCIAL
 
+```es```
+<br>
 Hola! Este es un proyecto para mi colegio desarrollado desde el 2022, usa una base de datos llamda PostGresSQL, jusnto a un framework de python para hacer stops web llamado Django
 en este README podrás encontrar todos los pasos e información para entender este proyecto 
 Deberia tener Cientos de usuarios, Suerte con el proyecto!
+
+<br>
+<br>
+```en```
+<br>
+hi! this project...
 
 <hr/>
 
