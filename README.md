@@ -24,7 +24,7 @@ Para instalar los paquetes necesarios:
 
 en actualizacion...
 
-Recuerda tener instalado PGadmin
+Recuerda tener instalado PGadmin (administrador de PosgreSQL)
 y configurar correctamente en tu entorno todos los datos de la base de datos 
 
 <hr/>
