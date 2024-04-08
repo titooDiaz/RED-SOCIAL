@@ -1,7 +1,8 @@
 /env
 /.vscode
-users/__pycache__/
-users/migrations/
-social/__pycache__/
-social/migrations/
-theme/__pycache__/
+social/users/__pycache__/
+social/users/migrations/
+social/social/__pycache__/
+social/social/migrations/
+social/core/__pycache__/
+social/theme/__pycache__/

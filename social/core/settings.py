@@ -107,8 +107,13 @@ ACCOUNT_EMAIL_UNIQUE = True
 AUTH_USER_MODEL="users.User"
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 3
-ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT =300
+# ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 3
+# ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT =300
+# https://docs.allauth.org/en/latest/account/rate_limits.html
+ACCOUNT_RATE_LIMITS = {
+    'login_failed': "10/m/ip,5/5m/key"
+}
+
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "account_login"
 
