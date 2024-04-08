@@ -1,2 +1,7 @@
 /env
 /.vscode
+users/__pycache__/
+users/migrations/
+social/__pycache__/
+social/migrations/
+theme/__pycache__/

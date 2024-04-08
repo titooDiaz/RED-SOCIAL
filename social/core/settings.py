@@ -8,8 +8,8 @@ import environ
 
 #lenguajes del humanize
 LANGUAGES = [
-    ('en', ('English')),
     ('es', ('Spanish')),
+    ('en', ('English')),
 ]
 
 #idioma por defecto en espa;ol
@@ -153,7 +153,7 @@ TEMPLATES = [
 
 #CONFIGURACION PARA POSTGRESQL
 DATABASES = {
-    "default": env.db("DATABASE_URL", default="postgres:///PeriodicoCoal"),
+    "default": env.db("DATABASE_URL", default="postgres:///REDSOCIAL"),
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 

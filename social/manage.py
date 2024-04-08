@@ -1,11 +1,5 @@
 #!/usr/bin/env python
 
-#instalar paquetes de talwin
-#(env) PS A:\PROYECTOS\DJANGO\RED SOCIAL\social\theme\static_src> npm i tailwind-scrollbar-hide 
-
-#instalar django allauth para la autenticacion de usuarios
-#python -m pip install django-allauth
-
 import os
 import sys
 
