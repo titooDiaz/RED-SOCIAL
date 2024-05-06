@@ -6,3 +6,4 @@ social/social/__pycache__/
 social/social/migrations/
 social/core/__pycache__/
 social/theme/__pycache__/
+node_modules/
