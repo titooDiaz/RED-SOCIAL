@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 #crearemos una variale de ambiente con un archivo .env
 #copiamos la secret key (SECRET_KEY = "django-insecure-)t#w_(6@-m&=x9saw&xb7bt!p9m77h^&3+c#cznnd6g_26fj+0" DEBUG = True)
-# 333sin espacios y sin (django-insecure-)
+# sin espacios y sin (django-insecure-)
 SECRET_KEY = os.environ.get('SECRET_KEY')
 #PARA DESPLEGAR CON RENDER
 DEBUG = 'RENDER' not in os.environ
@@ -65,9 +65,7 @@ INSTALLED_APPS = [
 ############
     'crispy_forms',
     "crispy_tailwind",
-#############
-#modelo para inicio de sec..
-    'accounts',    
+############# 
     #apps con django
     'core',
     'social',
@@ -158,7 +156,7 @@ TEMPLATES = [
 
 #CONFIGURACION PARA POSTGRESQL
 DATABASES = {
-    "default": env.db("DATABASE_URL", default="postgres:///REDSOCIAL"),
+    "default": env.db("DATABASE_URL", default="postgres:///red_social"),
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 

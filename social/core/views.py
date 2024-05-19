@@ -9,8 +9,6 @@ from users.models import Profile
 
 from social.models import NotificationSocial, SocialPost
 
-#espa;ol
-from django.utils.translation import activate
 
 #obligar cache
 def timestamp():
@@ -46,8 +44,6 @@ class notifications_delete(View):
 
 class HomeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        activate('es')  # Establece el contexto de traducción en español
-
         #notificaciones
         SocialNotification = NotificationSocial.objects.filter(para=request.user)
 
@@ -89,7 +85,6 @@ class HomeView(LoginRequiredMixin, View):
         return render(request, 'pages/index.html', context)
 
     def post(self, request, *args, **kwargs):
-        activate('es')
         if request.method == 'POST':
             logged_in_user = request.user
             posts = SocialPost.objects.all()
