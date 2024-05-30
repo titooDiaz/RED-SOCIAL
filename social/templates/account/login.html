@@ -6,20 +6,21 @@
 {% load tailwind_filters %}
 
 {% block content %}
-<div class="min-h-screen flex flex-col justify-center py-1 my-5 sm:px-6 lg:px-8 dark:bg-dark-main ">
+<div class="min-h-screen flex flex-col justify-center py-1 my-5 sm:px-6 lg:px-8">
+  <div class="bg-white p-6 rounded-lg">
   <div class="sm:mx-auto sm:w-full sm:max-w-md">
     <img class="mx-auto h-12 w-auto" src="{% static 'img/logo.png' %}" alt="Workflow">
     <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 ">
-      <span class="dark:text-dark-txt">NO TIENES CUENTA?</span> 
+      <span class="text-black">NO TIENES CUENTA?</span> 
     </h2>
-    <p class="mt-2 text-center text-sm text-gray-600">
-      <span class="dark:text-dark-txt">Puedes</span>
+    <p class="mt-2 text-center text-sm">
+      <span class="text-black">Puedes</span>
       <a href="{% url 'account_signup' %}" class="font-medium text-green-600 hover:text-green-500">
         registrarte
       </a>
     </p>
-    <p class="mt-2 text-center text-sm text-gray-600">
-      <span class="dark:text-dark-txt">volver al </span> 
+    <p class="mt-2 text-center text-sm">
+      <span class="text-black">volver al </span> 
       <a href="{% url 'home' %}" class="font-medium text-green-600 hover:text-green-500">
         inicio
       </a>
@@ -27,7 +28,6 @@
   </div>
 
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-    <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">  
       <!--FORM-->
       <form class="space-y-6" action="{% url 'account_login' %}" method="POST">
         {% csrf_token %}
@@ -51,7 +51,7 @@
           </button>
         </div>
       </form>
-  </div>
+    </div>
 </div>
 
 {% endblock %}

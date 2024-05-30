@@ -58,7 +58,7 @@ class Profile(models.Model): # este es el perfil
     #banner
     banner = models.ImageField(default='users/user_default_bg.png', upload_to=user_directory_path_banner, null=True, blank=True)
     #admin? variables definidas arriba
-    verified = models.CharField(max_length=10, choices=VERIFICATION_OPTIONS, default='unverified')
+    verified = models.CharField(max_length=10, choices=VERIFICATION_OPTIONS, default='verified')
     #monedas- decimal field significa numeros, blank - por lo menos 0
     coins = models.DecimalField(max_digits=19, decimal_places=2, default=0, blank=False)
     

@@ -1,16 +1,31 @@
 {% extends "base.html" %}
-
+{% load static %}
+{% load tailwind_filters %}
 {% block navbar %}
 {% include 'components/navbar.html' %}
 {% endblock navbar %}
 
-{% load i18n %}
-
-{% block head_title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
+{% block head_title %}Verify Your E-mail Address{% endblock %}
 
 {% block content %}
-    <h1>{% trans "Verify Your E-mail Address" %}</h1>
 
-    <p>{% blocktrans %}We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. Please contact us if you do not receive it within a few minutes.{% endblocktrans %}</p>
-
+    <section class="px-8 py-24 mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="container mx-auto text-center block bg-white rounded-lg p-6">
+        <div class="sm:mx-auto sm:w-full sm:max-w-md">
+            <img class="mx-auto w-12 h-12 " src="{% static 'img/logo.png' %}" alt="Workflow">
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            <span class="text-black">Verifica tu correo</span>  
+            </h2>
+            <p class="mt-2 text-center text-sm text-gray-600">
+            <span class="text-black">Te enviamos un correo para verificar que tu cuenta sea correcta!
+                <br>
+                Si no recibes ningun correo puedes
+                revisar tus correos de spam.
+            </span> 
+            </p>
+        
+        </div>
+        
+    </div>
+    </section>
 {% endblock %}
