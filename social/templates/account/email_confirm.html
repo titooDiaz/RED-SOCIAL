@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block navbar %}
 {% include 'components/navbar.html' %}
 {% endblock navbar %}
@@ -18,10 +18,27 @@
 
 <p>{% blocktrans with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endblocktrans %}</p>
 
-<form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
-{% csrf_token %}
-    <button type="submit" class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">{% trans 'Confirm' %}</button>
-</form>
+
+<section class="px-8 py-24 mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="container mx-auto text-center block bg-white rounded-lg p-6">
+        <div class="sm:mx-auto sm:w-full sm:max-w-md">
+            <img class="mx-auto w-12 h-12 " src="{% static 'img/logo.png' %}" alt="Workflow">
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            <span class="text-black">Bienvenido a <b>gosth media</b></span>  
+            </h2>
+            <p class="mt-2 text-center text-lg text-gray-600">
+            <span class="text-black">
+                Tu correo se verifico con exito!
+            </span> 
+            </p>
+            <form method="post" class="mt-2" action="{% url 'account_confirm_email' confirmation.key %}">
+                {% csrf_token %}
+                    <button type="submit" class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-lg font-medium rounded shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2">{% trans 'Confirm' %}</button>
+                </form>
+        </div>
+        
+    </div>
+    </section>
 
 {% else %}
 
