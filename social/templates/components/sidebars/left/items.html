@@ -18,7 +18,7 @@
     {% for user in follow %}
     <li>
         <a href="{% url 'users:profile' user.username %}" class="flex items-center space-x-2 p-2 hover:bg-gray-200 rounded-lg transition-all dark:text-dark-txt dark:hover:bg-dark-third">
-            <img  src="{{ user.profile.picture.url }S}?{{img}}" alt="Profile picture" class="w-10 h-10 rounded-full">
+            <img  src="{{ user.profile.picture.url }}?{{img}}" alt="Profile picture" class="w-10 h-10 rounded-full">
             <span class="font-semibold">{{ user.username }}</span>
         </a>
     </li>
