@@ -9,7 +9,6 @@ import environ
 #lenguajes del humanize
 LANGUAGES = [
     ('es', ('Spanish')),
-    ('en', ('English')),
 ]
 
 #idioma por defecto en espa;ol
@@ -75,9 +74,6 @@ INSTALLED_APPS = [
     #'theme',#python manage.py tailwind install *(recordar lo del modo oscuro en theme)
 ]
 
-#autenticacion de usuario...
-SITE_ID = 1
-
 #externo de tailwind
 TAILWIND_APP_NAME = 'theme'
 INTERNAL_IPS = [
@@ -111,6 +107,7 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_RATE_LIMITS = {
     'login_failed': "10/m/ip,5/5m/key"
 }
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "Hgost Media - "
 
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "account_login"
@@ -211,3 +208,7 @@ EMAIL_HOST_USER = 'miguelitodiaz169@gmail.com'
 EMAIL_HOST_PASSWORD = 'bxdegfpiqbqksich'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'miguelitodiaz169@gmail.com'
+
+
+SITE_ID = 1
+

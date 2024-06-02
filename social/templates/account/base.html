@@ -1,8 +1,10 @@
 {% load tailwind_tags %}
+{% load static %}
 
 <html>
   <head>
     {% tailwind_css %}
+    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/x-icon">
     <title>{% block head_title %}{% endblock %}</title>
     {% block extra_head %}
     {% endblock %}
