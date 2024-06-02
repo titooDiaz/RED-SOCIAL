@@ -60,7 +60,6 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'theme',
 ############
     'crispy_forms',
     "crispy_tailwind",
@@ -71,7 +70,7 @@ INSTALLED_APPS = [
     'users',
     #externo de tailwind 
     'tailwind', #python manage.py tailwind init
-    #'theme',#python manage.py tailwind install *(recordar lo del modo oscuro en theme)
+    'theme',#python manage.py tailwind install *(recordar lo del modo oscuro en theme)
 ]
 
 #externo de tailwind
@@ -117,6 +116,9 @@ LOGIN_URL = "account_login"
 
 #AGREGAR NODE JS A NUESTRO ENTORNO DE TRABAJO (recuerda agregarlo al path)
 NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+NPM_BIN_PATH = "/home/miguel/nodejs/bin/npm" 
+#npm install cross-env --save-dev
+#npm install tailwindcss --save-dev
 
 
 MIDDLEWARE = [
