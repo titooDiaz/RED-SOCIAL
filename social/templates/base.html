@@ -48,8 +48,10 @@
         </div>
 
         <!--main content-->
+        <div >
+            {% include 'messages.html' %}
+        </div>
         
-        {% include 'messages.html' %}
 
         <div class="w-full lg:w-3/4 xl:w-4/5 mt-36 md:mt-12 px-2">
             {% block content %}{% endblock content %}
