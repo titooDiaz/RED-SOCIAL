@@ -1,25 +1,53 @@
-{% extends 'base.html' %}
+{% extends 'users/base.html' %}
 
 {% load static %}
 
 {% load tailwind_filters %}
 
-{% block title %}{{user.username}} Edit Profile{% endblock title %}
+{% block title %}{{user.username}} - Estas editando tu perfil{% endblock title %}
 
 {% block navbar %}
 {% include 'components/navbar.html' %}
 {% endblock navbar %}
 
-{% block left_sidebar %}
-{% comment %} {% include 'components/sidebars/left/users/sidebar.html' %} {% endcomment %}
-{% endblock left_sidebar %}
-
 {% block content %}
+<div class="w-full lg:w-3/4 xl:w-4/5 mt-36 md:mt-12 px-2 pt-8">
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+    <div class="text-black dark:text-white">
+        <Label>Donde vives?</Label>
+        {{ form.location }}
 
-    <button type="submit">Save</button>
+        <br>
+
+        <Label>Url?</Label>
+        {{ form.url }}
+
+        <br>
+
+        <Label>Cuentanos sobre ti!</Label>
+        {{ form.bio }}
+
+        <br>
+
+        <Label>Cual es tu nombre?</Label>
+        {{ form.name }}
+
+        <br>
+
+        <Label>Cual es tu apellido?</Label>
+        {{ form.lastname }}
+
+        <br>
+
+        <Label>Cual es tu cumple?</Label>
+        {{ form.birthday }}
+    </div>
+
+    <br>
+
+    <button type="submit" class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-600 text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm">Guardar</button>
 </form>
+</div>
 
 {% endblock content %}

@@ -122,7 +122,7 @@ class AddFollower(LoginRequiredMixin, View):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            'User Followed'
+            'Usuario segido :D'
         )
         return redirect('users:profile', username=profile.user.username)
 
@@ -134,7 +134,7 @@ class RemoveFollower(LoginRequiredMixin, View):
 		messages.add_message(
             self.request,
             messages.SUCCESS,
-            'User Unfollowed'
+            'Dejaste de seguir al usuario D:'
         )
 		return redirect('users:profile', username=profile.user.username)
 
