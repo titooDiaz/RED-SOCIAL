@@ -70,7 +70,7 @@ def EditProfile(request):
     profile = Profile.objects.get(user=user)
 
     if request.method == 'POST':
-        form = EditProfileForm(request.POST, request.FILES, instance=profile)
+        form = EditProfileForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
             return redirect('users:profile', username=user.username)

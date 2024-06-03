@@ -28,7 +28,13 @@ class EditProfileForm(forms.ModelForm):
     bio = forms.CharField(widget=forms.TextInput(attrs={'class': 'max-w-lg block w-full shadow-sm dark:bg-gray-600 dark:text-white dark:border-dark-third focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md'}), max_length=260, required=False)
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'max-w-lg block w-full shadow-sm dark:bg-gray-600 dark:text-white dark:border-dark-third focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md'}), max_length=260, required=False)
     lastname = forms.CharField(widget=forms.TextInput(attrs={'class': 'max-w-lg block w-full shadow-sm dark:bg-gray-600 dark:text-white dark:border-dark-third focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md'}), max_length=260, required=False)
-    birthday = forms.DateField(widget= forms.TextInput(attrs={'class': 'max-w-lg block w-full shadow-sm dark:bg-gray-600 dark:text-white dark:border-dark-third focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md'}), required=False)
+    birthday = forms.DateField(
+        widget=forms.DateInput(attrs={
+            'type': 'date',
+            'class': 'max-w-lg block w-full shadow-sm dark:bg-gray-600 dark:text-white dark:border-dark-third focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md'
+        }),
+        required=False
+    )
 
     class Meta:
         model = Profile

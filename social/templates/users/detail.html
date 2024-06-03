@@ -198,14 +198,16 @@
 <div>
 
   <div class="mt-5">
+    {% if user.profile.name != None %}
       <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
         <dt class="text-sm font-medium text-black">
           <span class="dark:text-white">Nombre completo</span> 
         </dt>
         <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-          <span class="dark:text-white">{{profile.user.first_name}} {{profile.user.last_name}}</span>
+          <span class="dark:text-white">{{user.profile.name}} {{user.profile.lastname}}</span>
         </dd>
       </div>
+    {% endif %}
   
       <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
         <dt class="text-sm font-medium text-black ">
