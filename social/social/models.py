@@ -13,6 +13,8 @@ POST_STATUS=(
 def user_directory_path(instance, filename):
 	return 'users/socialposts/{0}'.format(filename)
 
+class Image(models.Model):
+    image = models.ImageField(upload_to=user_directory_path, blank=True, null=True)
 
 class SocialPost(models.Model):
     body=models.TextField()
@@ -20,7 +22,7 @@ class SocialPost(models.Model):
     verified = models.CharField(max_length=100, choices=POST_STATUS, default='NoRevisado')
     body=models.TextField(default='')
     ##################
-    image = models.ManyToManyField('Image', blank=True)
+    image = models.ManyToManyField(Image, blank=True)
     created_on = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='social_post_author')
     likes = models.ManyToManyField(User, blank=True, related_name='likes')
@@ -55,10 +57,6 @@ class SocialComment(models.Model):
 
     class Meta:
         ordering = ['-created_on']
-
-
-class Image(models.Model):
-    image = models.ImageField(upload_to=user_directory_path, blank=True, null=True)
 
 
 

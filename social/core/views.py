@@ -85,28 +85,26 @@ class HomeView(LoginRequiredMixin, View):
         return render(request, 'pages/index.html', context)
 
     def post(self, request, *args, **kwargs):
-        if request.method == 'POST':
-            logged_in_user = request.user
-            posts = SocialPost.objects.all()
-            form = SocialPostForm(request.POST, request.FILES)
-            files = request.FILES.getlist('image')
+        logged_in_user=request.user
 
-            if form.is_valid():
-                new_post = form.save(commit=False)
-                new_post.author = logged_in_user
-                new_post.save()
+        posts = SocialPost.objects.all()
 
-                for f in files:
-                    img = Image(image=f)
-                    img.save()
-                    new_post.image.add(img)
+        form = SocialPostForm(request.POST, request.FILES)
+        files = request.FILES.getlist('image')
 
-                new_post.save()
+        if form.is_valid():
+            new_post = form.save(commit=False)
+            new_post.author = logged_in_user
+            new_post.save()
 
-                # Redireccionar al usuario después de procesar el formulario
-                return redirect('home')
-            context={
-                'posts':posts,
-                'form':form,
-            }
+            for f in files:
+                img = Image(image=f)
+                img.save()
+                new_post.image.add(img)
+
+            new_post.save()
+        context={
+            'posts':posts,
+            'form':form
+        }
         return render(request, 'pages/index.html', context)

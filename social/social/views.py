@@ -104,6 +104,45 @@ class PostDetailView(LoginRequiredMixin, View):
 
 
 
+#VISTA DE VIDEOS MULTIMEDIA
+class HomeMediaView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+
+        posts = SocialPost.objects.all()
+        #para ver solamente a los que seguimos:
+        img=timestamp()
+
+        user = request.user
+        profile = Profile.objects.get(user=user)
+
+        followers = profile.followers.all()
+        follow = profile.followers.all()
+
+        if len(followers) == 0:
+                is_following = False
+            
+        for follower in followers:
+            if follower == request.user:
+                is_following = True
+                break
+            else:
+                is_following = False
+
+        number_of_followers = len(followers)
+
+        context = {
+            'user':user,
+            'profile':profile,
+            'number_of_followers': number_of_followers,
+            'is_following': is_following,
+            'follow':follow,
+            'img':img,
+            'posts':posts,
+            #notification (poder eliminar) abajo
+        }
+        return render(request, 'pages/index.html', context)
+
+
 class PostEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     activate('es')  # Establece el contexto de traducción en español
     model=SocialPost

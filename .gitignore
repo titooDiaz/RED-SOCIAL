@@ -8,4 +8,5 @@ social/core/__pycache__/
 social/theme/__pycache__/
 node_modules/
 
+social/media/users/socialposts/
 social/theme/
