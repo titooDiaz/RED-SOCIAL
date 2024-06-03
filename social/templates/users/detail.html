@@ -9,8 +9,11 @@
 {% block navbar %}
 {% include 'components/navbar.html' %}
 {% endblock navbar %}
-
+<head>
+  {% block title %} {{profile.user.username }} - Perfil {% endblock title %}
+</head>
 {% block content %}
+
 
 <main class=' min-h-screen w-full py-5 overflow-x-hidden'>
     <!--banner img-->
@@ -39,25 +42,24 @@
                         {% if is_following %}
                         <form method="POST" action="{% url 'users:remove-follower' profile.pk %}" >
                             {% csrf_token %}
-                            <button type="submit" class="float-right inline-flex justify-center px-4 py-2 border dark:bg-dark-main dark:border-dark-third dark:hover:bg-dark-third dark:text-dark-txt border-green-500 shadow-sm text-md font-bold rounded-full text-green-500 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-dark-second focus:ring-green-500">
+                            <button type="submit" class="float-right inline-flex justify-center px-4 py-2 border dark:bg-white dark:border-dark-third dark:hover:bg-white dark:text-black border-orange-500 shadow-sm text-md font-bold rounded-full text-orange-500 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-dark-second focus:ring-orange-500">
                             Unfollow
                             </button>
                         </form>
                         {% else %}
                         <form method="POST" action="{% url 'users:add-follower' profile.pk %}" >
                             {% csrf_token %}
-                            <button type="submit" class="float-right inline-flex justify-center px-4 py-2 border dark:bg-dark-main dark:border-dark-third dark:hover:bg-dark-third dark:text-dark-txt border-green-500 shadow-sm text-md font-bold rounded-full text-green-500 dark:bg-dark-second bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-dark-second focus:ring-green-500">
+                            <button type="submit" class="loat-right inline-flex justify-center px-4 py-2 border dark:bg-white dark:border-dark-third dark:hover:bg-white dark:text-black border-orange-500 shadow-sm text-md font-bold rounded-full text-orange-500 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-dark-second focus:ring-orange-500">
                             Follow
                             </button>
                         </form>
                         {% endif %}
                     {% endif %}
                     
-
                     <div x-data="{ open: false }" @keydown.window.escape="open = false" class=" mt-6 sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
                         <div class="mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
-                            {% if user.is_authenticated and user == profile.user %}
-                            <a href="{% url 'users:edit-profile' %}" class="inline-flex justify-center px-4 py-2 border dark:bg-dark-main  dark:hover:bg-dark-third border-green-500 shadow-sm text-md font-bold rounded-full text-green-500 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-dark-second focus:ring-green-500">
+                            {% if user.is_authenticated and request.user == profile.user %}
+                            <a href="{% url 'users:edit-profile' %}" class="inline-flex justify-center px-4 py-2 border dark:bg-dark-main  dark:hover:bg-dark-third border-orange-500 shadow-sm text-md font-bold rounded-full text-orange-500 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-dark-second focus:ring-orange-500">
                                 <span>EDITAR PERFIL</span>
                             </a>
                             {% endif %}
@@ -67,23 +69,21 @@
                 </div>
 
                 <div class=" sm:block  mt-6 min-w-0 flex-1">
-                    <h1 class="text-2xl font-bold dark:text-dark-txt text-gray-900 truncate">
-
-
+                    <h1 class="text-2xl font-bold dark:text-white text-gray-900 truncate">
                       <!--VERIFICACION DE USUARIO-->
                     {{profile.user.username}} 
                         {% if profile.verified == "verified" %}
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block text-orange-500" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                             </svg>
                         {% endif %}
                         {% if profile.verified == "student" %}
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 inline-block text-green-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 inline-block text-orange-500">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
                         </svg>
                         {% endif %}
                         {% if profile.verified == "popular" %}
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 inline-block text-green-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 inline-block text-orange-500">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
                         </svg>
                         
@@ -92,13 +92,13 @@
                 </div>
 
                 {% if profile.bio %}
-                <p class="mt-2 max-w-4xl text-sm dark:text-dark-txt text-gray-500">{{profile.bio}}</p>
+                <p class="mt-2 max-w-4xl text-sm dark:text-dark-txt text-black">{{profile.bio}}</p>
                 {% endif %}
 
                 <div class="inline-flex grid-cols-4">
                 <!-- Location -->
                 {% if profile.location %}
-                <p class="mt-2 max-w-4xl text-sm mx-1 text-gray-500 cursor-default">
+                <p class="mt-2 max-w-4xl text-sm mx-1 text-black cursor-default">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -108,16 +108,16 @@
 
                 <!--Website-->
                 {% if profile.url %}
-                <p class="mt-2 max-w-4xl text-sm mx-1 dark:text-dark-txt text-gray-500 cursor-default">
+                <p class="mt-2 max-w-4xl text-sm mx-1 dark:text-dark-txt text-black cursor-default">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                  </svg><a class="text-green-500 hover:text-green-900" href="{{profile.url}}" target="_blank" rel="nofollow">{{profile.url}}</a>
+                  </svg><a class="text-orange-500 hover:text-orange-900" href="{{profile.url}}" target="_blank" rel="nofollow">{{profile.url}}</a>
                 </p>
                 {% endif %}
 
 
                 {% if profile.birthday %}
-                <p class="mt-2 max-w-4xl text-sm mx-1 text-gray-500 cursor-default">
+                <p class="mt-2 max-w-4xl text-sm mx-1 text-black cursor-default">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z" />
                   </svg>
@@ -127,10 +127,11 @@
 
                 <!-- Date Joined -->
                 {% if profile.date_created %}
-                <p class="mt-2 max-w-4xl text-sm mx-1 text-gray-500 cursor-default">
+                <p class="mt-2 max-w-4xl text-sm mx-1 text-black dark:text-white cursor-default">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>Joined {{profile.date_created}}
+                  </svg>
+                  Se unio en {{profile.date_created}}
                 </p>
                 {% endif %}
                 </div>
@@ -145,45 +146,42 @@
     <!--EndTiers-->
 
     <div class="mt-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-
-
     <div x-data="{
             openTab: 1,
-            activeClasses:'border-green-500 text-green-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm',
-            inactiveClasses:'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm',
-            underlineActive: 'border-indigo-500 text-indigo-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm',
+            activeClasses:'border-orange-500 text-orange-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm',
+            inactiveClasses:'border-transparent text-black hover:text-orange-400 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm',
+            underlineActive: 'border-orange-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm',
             underlineInactive: 'bg-transparent absolute inset-x-0 bottom-0 h-0.5'
         }">
         <div class="">
-            <div class="border-b border-gray-200">
-            <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-                <!-- Current: "border-green-500 text-green-600", Default: "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" -->
+            <div class="border-b border-gray-200 dark:border-gray-700">
+            <nav class=" flex space-x-8" aria-label="Tabs">
+                <!-- Current: "border-orange-500 text-orange-600", Default: "border-transparent text-black hover:text-orange-400 hover:border-gray-300" -->
                 <button @click="openTab = 1"
                         :class="openTab === 1 ? activeClasses : inactiveClasses"
-                 class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                My Account
+                 class="border-transparent text-black dark:text-white hover:text-orange-400 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                Sobre mi...
                 <span aria-hidden="true" :class="openTab === 1 ? underlineActive : underlineInactive"></span>
                 </button>
 
                 <button @click="openTab = 2"
                         :class="openTab === 2 ? activeClasses : inactiveClasses"
-                 class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                Company
+                 class="border-transparent text-black dark:text-white hover:text-orange-400 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                Seguidores
                 <span aria-hidden="true" :class="openTab === 2 ? underlineActive : underlineInactive"></span>
                 </button>
 
                 <button @click="openTab = 3"
                         :class="openTab === 3 ? activeClasses : inactiveClasses"
-                class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                Team Members
+                class="border-transparent text-black dark:text-white hover:text-orange-400 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                Seguidos
                 <span aria-hidden="true" :class="openTab === 3 ? underlineActive : underlineInactive"></span>
                 </button>
 
                 <button @click="openTab = 4"
                         :class="openTab === 4 ? activeClasses : inactiveClasses"
-                class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                Billing
+                class="border-transparent text-black dark:text-white hover:text-orange-400 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                Publicaciones
                 <span aria-hidden="true" :class="openTab === 4 ? underlineActive : underlineInactive"></span>
                 </button>
             </nav>
@@ -196,11 +194,10 @@
         <!-- This example requires Tailwind CSS v2.0+ -->
 <div>
 
-  <div class="mt-5 border-t border-gray-200">
-    <dl class="sm:divide-y sm:divide-gray-200">
+  <div class="mt-5">
       <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
-        <dt class="text-sm font-medium text-gray-500">
-          <span class="dark:text-dark-txt">Nombre completo</span> 
+        <dt class="text-sm font-medium text-black">
+          <span class="dark:text-white">Nombre completo</span> 
         </dt>
         <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
           <span class="dark:text-dark-txt">{{profile.user.first_name}} {{profile.user.last_name}}</span>
@@ -208,14 +205,13 @@
       </div>
   
       <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
-        <dt class="text-sm font-medium text-gray-500 ">
-          <span class="dark:text-dark-txt">Monedas</span> 
+        <dt class="text-sm font-medium text-black ">
+          <span class="dark:text-white">Monedas</span> 
         </dt>
         <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-          <span class="dark:text-dark-txt">{{ user.profile.coins }}</span> 
+          <span class="dark:text-white">{{ user.profile.coins }}</span> 
         </dd>
       </div>
-    </dl>
   </div>
 </div>
 

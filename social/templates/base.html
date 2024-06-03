@@ -43,7 +43,7 @@
 
     <div class="flex justify-center h-screen w-full lg:w-4/4 xl:w-5/5">
         <!--left sidebar-->
-        <div class="w-1/5 pt-16 h-full hidden xl:flex flex-col fixed top-0 left-0 md:pt-40">
+        <div class="w-1/5 pt-16 h-full hidden xl:flex flex-col fixed top-0 left-0 ">
         {% block left_sidebar %}{% endblock left_sidebar %}
         </div>
 
@@ -51,7 +51,7 @@
         
         {% include 'messages.html' %}
 
-        <div class="w-full lg:w-3/4 xl:w-4/5 mt-12 lg:mt-12 px-2">
+        <div class="w-full lg:w-3/4 xl:w-4/5 mt-36 md:mt-12 px-2">
             {% block content %}{% endblock content %}
         </div>    
 

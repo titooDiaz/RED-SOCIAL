@@ -23,18 +23,8 @@
 <!-- main content -->
 {% block content %}
 
-<div class="lg:w-3/4 xl:w-5/7 ml-auto mr-auto bg-white dark:bg-dark-third max-w-full px-4 py-5 border-b rounded-lg mb-2 dark:border-dark-second border-gray-200 sm:px-6">
-        
-        <h3 class="text-xl leading-6 cursor-default dark:text-dark-txt prose rounded font-bold text-gray-900">
-        Recuerda que...
-        </h3>
 
-        <p class="mt-1 text-sm cursor-default dark:text-dark-txt text-gray-500">
-            Es importante recordar que todo lo que compartimos en internet puede tener un impacto duradero. Antes de publicar algo, es necesario pensar en cómo podría ser interpretado por otros y si puede generar algún tipo de daño o problema. Además, es fundamental respetar las leyes y normas de la sociedad y de la plataforma en la que estamos publicando. Tomar consciencia y tener responsabilidad en nuestras acciones online es clave para crear una comunidad segura y positiva en la que todos podamos disfrutar y aprender.<span class="font-bold"> Periodico COAL</span>
-        </p>
-    </div>
-
-<div class=" lg:w-3/4 xl:w-5/7 ml-auto mr-auto bg-white max-w-full dark:bg-dark-second shadow px-4 py-5 sm:rounded-lg sm:p-6">
+<div class=" lg:w-7/12 xl:w-5/7 ml-auto mr-auto bg-white max-w-full dark:bg-dark-second shadow px-4 py-5 sm:rounded-lg sm:p-6 mt-12">
 
         <!-- POST IMAGE -->
         {% if post.image.count == 1 %}
@@ -551,25 +541,25 @@
                                     <p class="text-sm dark:text-dark-txt text-gray-500">
                                         Comparte lo que piensas en este post!
                                     </p>
-                                    </div>
+                                    
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-3">
-
-                                <div class="mt-5 sm:mt-6 ">
-                                    <form method="POST" id="formComment" class="inline-flex">
+                            <div class="grid grid-cols-3 gap-3">
+                                <div class="mt-5 col-span-3">
+                                    <form method="POST" id="formComment" class="block">
                                         {% csrf_token %}
-                                        {{form.comment}}
-                                        <button id="PrincipalComment" @click="open = false" type="submit" class="inline-flex items-center ml-1 px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                        <div class="w-full dark:text-white">
+                                            {{form.comment}}
+                                        </div>
+                                        <br>
+                                        <button id="PrincipalComment" @click="open = false" type="submit" class="w-full items-center p-3 border border-transparent text-xs font-medium rounded text-white bg-orange-600 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 text-center">
                                             PUBLICAR
                                         </button>
                                     </form>
-                                    
-
                                 </div>
-
                             </div>
+                            
                             <!-- Add more Grid-cols-3 -->
 
                         </div>
@@ -631,7 +621,7 @@
                 
                                 <!--BOTON DE COMENTARIOS APRA DAR LIKE -->
                                 {% if request.user in comment.likes.all %}
-                                    <button id="like-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-like-url="{% url 'social:comment-like' post.pk comment.pk %}" type="submit" class="comment-like-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-blue-600  flex space-x-2 justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-blue-600">
+                                    <button id="like-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-like-url="{% url 'social:comment-like' post.pk comment.pk %}" type="submit" class="comment-like-btn flex space-x-2 justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-blue-600">
                                 {% else %}   
                                     <button id="like-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-like-url="{% url 'social:comment-like' post.pk comment.pk %}" type="submit" class="comment-like-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-black-600 "> 
                                 {% endif %}
@@ -645,7 +635,7 @@
                 
                                 <!--BOTON DE COMENTARIOS APRA DAR DISLIKE -->
                                 {% if request.user in comment.dislikes.all %}
-                                    <button id="dislike-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-dislike-url="{% url 'social:comment-dislike' post.pk comment.pk %}" type="submit" class="comment-dislike-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-blue-600  flex space-x-2 justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-red-500">
+                                    <button id="dislike-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-dislike-url="{% url 'social:comment-dislike' post.pk comment.pk %}" type="submit" class="comment-dislike-btn flex space-x-2 justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-red-500">
                                 {% else %}   
                                     <button id="dislike-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-dislike-url="{% url 'social:comment-dislike' post.pk comment.pk %}" type="submit" class="comment-dislike-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-black-600 "> 
                                 {% endif %}
@@ -743,7 +733,7 @@
                 
                                         <!--BOTON DE COMENTARIOS APRA DAR LIKE -->
                                         {% if request.user in comment.likes.all %}
-                                            <button id="like-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-like-url="{% url 'social:comment-like' post.pk comment.pk %}" type="submit" class="comment-like-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-blue-600  flex space-x-2 justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-blue-600">
+                                            <button id="like-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-like-url="{% url 'social:comment-like' post.pk comment.pk %}" type="submit" class="comment-like-btn flex space-x-2 justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-blue-600">
                                         {% else %}   
                                             <button id="like-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-like-url="{% url 'social:comment-like' post.pk comment.pk %}" type="submit" class="comment-like-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-black-600ss "> 
                                         {% endif %}
@@ -758,7 +748,7 @@
                 
                                         <!--BOTON DE COMENTARIOS APRA DAR DISLIKE -->
                                         {% if request.user in comment.dislikes.all %}
-                                            <button id="dislike-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-dislike-url="{% url 'social:comment-dislike' post.pk comment.pk %}" type="submit" class="comment-dislike-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-blue-600  flex space-x-2 justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-red-500">
+                                            <button id="dislike-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-dislike-url="{% url 'social:comment-dislike' post.pk comment.pk %}" type="submit" class="comment-dislike-btn flex space-x-2 justify-center items-center text-xl py-2 rounded-lg cursor-pointer text-red-500">
                                         {% else %}   
                                             <button id="dislike-btn-comment-{{ comment.pk }}" data-comment-id="{{ comment.pk }}" data-post-id="{{ post.pk }}" data-dislike-url="{% url 'social:comment-dislike' post.pk comment.pk %}" type="submit" class="comment-dislike-btn flex space-x-2 justify-center items-center text-xs py-2 rounded-lg cursor-pointer text-black-600ss "> 
                                         {% endif %}

@@ -14,17 +14,17 @@
 
         {% if not user.is_authenticated %}
 
-                <a href="{% url 'account_login' %}" class="inline-flex md:hidden items-center justify-center p-1 rounded-full bg-green-600 hover:bg-green-600 dark:hover:bg-dark-third mx-1">
+                <a href="{% url 'account_login' %}" class="inline-flex md:hidden items-center justify-center p-1 rounded-full bg-orange-600 hover:bg-orange-600 dark:hover:bg-dark-third mx-1">
                     <span class="mx-2 font-semibold dark:text-dark-txt">Ingresar</span>
                 </a>
 
-                <a href="{% url 'account_signup' %}" class="inline-flex md:hidden items-center justify-center p-1 rounded-full bg-green-600 hover:bg-green-200 dark:hover:bg-dark-third mx-1">
+                <a href="{% url 'account_signup' %}" class="inline-flex md:hidden items-center justify-center p-1 rounded-full bg-orange-600 hover:bg-orange-200 dark:hover:bg-dark-third mx-1">
                     <span class="mx-2 font-semibold dark:text-dark-txt">Registrarte</span>
                 </a>
 
         {% else %}
             <a href="#" class="inline-flex md:hidden items-center justify-center p-1 rounded-full hover:bg-gray-200 dark:hover:bg-dark-third mx-1">
-                <i class='p-2 bg-green-600 rounded-full'></i>
+                <i class='p-2 bg-orange-600 rounded-full'></i>
                 <span class="mx-2 font-semibold dark:text-dark-txt">{{ user.profile.coins }}</span>
             </a>
 
@@ -55,14 +55,14 @@
             </style>
 
 
-<div x-show="open" @click.away="open=false" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg dark:bg-dark-second bg-white ring-1 ring-black ring-opacity-5 focus:outline-none fixed z-10" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+<div x-show="open" @click.away="open=false" class="origin-top-right right-0 mt-2 w-56 rounded-md shadow-lg dark:bg-dark-second bg-white ring-1 ring-black ring-opacity-5 focus:outline-none fixed z-10" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
     <div class="py-1" role="none">
   
       <div class="notification-container max-h-48 overflow-y-auto md:max-h-full" style="max-height: 300px; overflow-y: auto;">
   
         <p href="#" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">
           {% if SocialNotification.count != 0 %}
-          <a href="{% url 'notifications-delete' user=request.user.id %} " class="text-green-500 border-b border-green-500">
+          <a href="{% url 'notifications-delete' user=request.user.id %} " class="text-orange-500 border-b border-orange-500">
             eliminar todas las notificaciones
           </a>
           {% else %}
@@ -74,7 +74,7 @@
         <p href="#" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">
           <img src="{{ notification.de.profile.picture.url }}?{{img}}" alt="Profile picture" class="w-10 h-10 rounded-full inline-block">
           {{notification.mensaje}}
-          <a href="{% url 'notification-redirect' dato=notification.post notification_id=notification.id %} " class="text-green-500 border-b border-green-500">
+          <a href="{% url 'notification-redirect' dato=notification.post notification_id=notification.id %} " class="text-orange-500 border-b border-orange-500">
             ver
           </a>
         </p>
@@ -96,7 +96,7 @@
     <!-- MAIN NAV -->
     <ul x-data="{ open: false }" class="flex w-full lg:w-max items-center justify-center">
         <li class="w-1/5 md:w-max text-center">
-            <a href="{% url 'home' %}" class="w-full text-3xl py-2 px-3 xl:px-12 cursor-pointer text-center inline-block text-green-500 border-b-4 border-green-600">
+            <a href="{% url 'home' %}" class="w-full text-3xl py-2 px-3 xl:px-12 cursor-pointer text-center inline-block text-orange-500 border-b-4 border-orange-600">
                 <i class='bx bxs-home'></i>
             </a>
         </li>
@@ -180,38 +180,38 @@
     <ul class="hidden md:flex mx-4 items-center justify-center">
 
         {% if not user.is_authenticated %}
-            <a href="{% url 'account_login' %}" class="inline-flex items-center justify-center p-1 rounded-full bg-green-600 hover:bg-green-600 dark:hover:bg-dark-third mx-1">
+            <a href="{% url 'account_login' %}" class="inline-flex items-center justify-center p-1 rounded-full bg-orange-600 hover:bg-orange-600 dark:hover:bg-dark-third mx-1">
                 <span class="mx-2 font-semibold dark:text-dark-txt">Ingresar</span>
             </a>
         
 
-            <a href="{% url 'account_signup' %}" class="inline-flex items-center justify-center p-1 rounded-full bg-green-600 hover:bg-green-200 dark:hover:bg-dark-third mx-1">
+            <a href="{% url 'account_signup' %}" class="inline-flex items-center justify-center p-1 rounded-full bg-orange-600 hover:bg-orange-200 dark:hover:bg-dark-third mx-1">
                 <span class="mx-2 font-semibold dark:text-dark-txt">Registrate</span>
             </a>
         {% else %}
 
         <li class="h-full xl:flex">
             <a href="#" class="inline-flex items-center justify-center p-1 rounded-full hover:bg-gray-200 dark:hover:bg-dark-third mx-1">
-                <i class='p-2 bg-green-600 rounded-full'></i>
+                <i class='p-2 bg-orange-600 rounded-full'></i>
                 <span class="mx-2 font-semibold dark:text-dark-txt">{{ user.profile.coins }}</span>
             </a>
         </li>
 
         <li>
             <div x-data="{open:false}">
-            <div @click="open=true" class="text-xl grid place-items-center dark:bg-dark-second bg-gray-200 dark:bg-dark-third dark:text-dark-txt rounded-full mx-1 p-3 cursor-pointer hover:bg-gray-300 relative">
+            <div @click="open=true" class="text-xl grid place-items-center bg-gray-200 dark:bg-dark-third dark:text-dark-txt rounded-full mx-1 p-3 cursor-pointer hover:bg-gray-300 relative">
                 <i class='bx bxs-bell'></i>
                 <span class="text-xs absolute top-0 right-0 bg-red-500 text-white font-semibold rounded-full px-1 text-center">{{SocialNotification.count}}</span>
             </div>
 
-            <div x-show="open" @click.away="open=false" class="origin-top-right absolute right-0 mt-2 w-64 rounded-md shadow-lg dark:bg-dark-second bg-white ring-1 ring-black ring-opacity-5 focus:outline-none fixed z-10" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+            <div x-show="open" @click.away="open=false" class="origin-top-right right-0 mt-2 w-64 rounded-md shadow-lg dark:bg-dark-second bg-white ring-1 ring-black ring-opacity-5 focus:outline-none fixed z-10" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                 <div class="py-1" role="none">
               
                   <div class="notification-container max-h-48 overflow-y-auto md:max-h-full" style="max-height: 300px; overflow-y: auto;">
               
                     <p href="#" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">
                       {% if SocialNotification.count != 0 %}
-                      <a href="{% url 'notifications-delete' user=request.user.id %} " class="text-green-500 border-b border-green-500">
+                      <a href="{% url 'notifications-delete' user=request.user.id %} " class="text-orange-500 border-b border-orange-500">
                         eliminar todas las notificaciones
                       </a>
                       {% else %}
@@ -223,7 +223,7 @@
                     <p href="#" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">
                       <img src="{{ notification.de.profile.picture.url }}?{{img}}" alt="Profile picture" class="w-10 h-10 rounded-full inline-block">
                       {{notification.mensaje}}
-                      <a href="{% url 'notification-redirect' dato=notification.post notification_id=notification.id %} " class="text-green-500 border-b border-green-500">
+                      <a href="{% url 'notification-redirect' dato=notification.post notification_id=notification.id %} " class="text-orange-500 border-b border-orange-500">
                         ver
                       </a>
                     </p>
