@@ -3,11 +3,18 @@ from django import forms
 
 
 class EditProfileStaticForm(forms.ModelForm):
-    picture = forms.ImageField(label='Profile Picture',required=False, widget=forms.FileInput)
-    banner = forms.ImageField(label='Banner Picture',required=False, widget=forms.FileInput)
+    picture = forms.FileField(label='Profile Picture',required=False, 
+        widget=forms.FileInput(attrs={'class': 'hidden',
+            'id':'dropzone-file'
+    }))
+    
+    banner = forms.FileField(label='Banner Picture',required=False, 
+        widget=forms.FileInput(attrs={'class': 'hidden',
+            'id':'dropzone-file-banner'
+    }))
     class Meta:
         model = Profile
-        fields = ('picture', 'banner',)
+        fields = ['picture', 'banner',]
 
 class EditProfileForm(forms.ModelForm):
     # first_name = forms.CharField(

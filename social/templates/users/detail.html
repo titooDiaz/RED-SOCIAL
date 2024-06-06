@@ -64,7 +64,17 @@
                             </a>
                             {% endif %}
                         </div>
+                        <div class="mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
+                          {% if user.is_authenticated and request.user == profile.user %}
+                          <a href="{% url 'users:edit-profile-static' %}" class="inline-flex justify-center px-4 py-2 border dark:bg-dark-main  dark:hover:bg-dark-third border-orange-500 shadow-sm text-md font-bold rounded-full text-orange-500 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-dark-second focus:ring-orange-500">
+                              <span>EDITAR IMAGENES</span>
+                          </a>
+                          {% endif %}
+                      </div>
                     </div>
+
+                   
+
                 
                 </div>
 

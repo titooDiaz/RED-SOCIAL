@@ -15,33 +15,38 @@
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="text-black dark:text-white">
-        <Label>Donde vives?</Label>
-        {{ form.location }}
 
-        <br>
+        <div class="grid md:grid-cols-2 md:gap-6">
+            <div class="relative z-0 w-full group">
+                <Label>Donde vives?</Label>
+                {{ form.location }}
 
-        <Label>Url?</Label>
-        {{ form.url }}
+            </div>
+            <div class="relative z-0 w-full group">
+                <Label>Url?</Label>
+                {{ form.url }}
+            </div>
 
-        <br>
+            <div class="relative z-0 w-full group">
+                <Label>Cuentanos sobre ti!</Label>
+                {{ form.bio }}
+            </div>
 
-        <Label>Cuentanos sobre ti!</Label>
-        {{ form.bio }}
+            <div class="relative z-0 w-full group">
+                <Label>Cual es tu nombre?</Label>
+                {{ form.name }}
+            </div>
 
-        <br>
+            <div class="relative z-0 w-full group">
+                <Label>Cual es tu apellido?</Label>
+                {{ form.lastname }}
+            </div>
 
-        <Label>Cual es tu nombre?</Label>
-        {{ form.name }}
-
-        <br>
-
-        <Label>Cual es tu apellido?</Label>
-        {{ form.lastname }}
-
-        <br>
-
-        <Label>Cual es tu cumple?</Label>
-        {{ form.birthday }}
+            <div class="relative z-0 w-full group">
+                <Label>Cual es tu cumple?</Label>
+                {{ form.birthday }}
+            </div>
+        </div>
     </div>
 
     <br>
