@@ -1,44 +1,95 @@
+<p align="center">
+  <img width="150px" src="https://i.ibb.co/bXvzjXm/LOGO-h1.png" alt="Logo del proyecto" />
+</p>
+
+
 # RED-SOCIAL
 
-```es```
-<br>
-Hola! Este es un proyecto para mi colegio desarrollado desde el 2022, usa una base de datos llamda PostGresSQL, jusnto a un framework de python para hacer stops web llamado Django
-en este README podrás encontrar todos los pasos e información para entender este proyecto 
-Deberia tener Cientos de usuarios, Suerte con el proyecto!
+## Descripción
 
-<br>
-<br>
+Este proyecto es una red social desarrollada con Django en el backend y Node.js para gestionar Tailwind CSS en el frontend. Su objetivo es servir como un espacio de comunicación y una plataforma para la práctica de programación.
 
-```en```
-<br>
-hi! this project...
+---
 
-<hr/>
+## Instalación y Configuración
 
-# PASOS:
-Primero, crear un entorno virtual:
-### `python -m virtualenv env`
+### 1. Clonar el repositorio
+```bash
+  git clone https://github.com/titooDiaz/RED-SOCIAL.git
+  cd red-social
+```
 
-Para instalar los paquetes necesarios:
-### `pip install -r requirements.txt`
+### 2. Crear y activar un entorno virtual
+```bash
+  python -m venv env  # Crear entorno virtual
+  source env/bin/activate  # Activar en Linux/macOS
+  env\Scripts\activate  # Activar en Windows
+```
 
-en actualizacion...
+### 3. Instalar dependencias de Python
+```bash
+  pip install -r requirements.txt
+```
 
-Recuerda tener instalado PGadmin (administrador de PosgreSQL)
-y configurar correctamente en tu entorno todos los datos de la base de datos 
+### 4. Configurar la base de datos
+Este proyecto utiliza PostgreSQL. Asegúrate de tener instalado PGAdmin y configurar la base de datos en el archivo `settings.py`.
 
-<hr/>
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'nombre_de_tu_bd',
+        'USER': 'usuario',
+        'PASSWORD': 'contraseña',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+```
 
-<br/>
+Luego, ejecuta las migraciones:
+```bash
+  python manage.py migrate
+```
 
-# 🌍🌞🌃✨ Por si deseas contactarme 👨‍💻 :
+### 5. Instalar dependencias de Node.js para Tailwind CSS
+Asegúrate de tener Node.js instalado. Luego, ejecuta:
+```bash
+  npm install
+```
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Miguel_Angel_Diaz-0077B5?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=101010)](https://www.linkedin.com/in/miguel-angel-diaz-858379297/)
-<br/>
-[![YouTube](https://img.shields.io/badge/YouTube-titooo-FF0000?style=for-the-badge&logo=youtube&logoColor=white&labelColor=101010)](https://www.youtube.com/channel/UC7TggInDtfL8HXmFeVtvSIg)
-<br/>
-[![Twitter](https://img.shields.io/badge/Twitter-@titooo159-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white&labelColor=101010)](https://twitter.com/titooo159)
-<br/>
-[![Instagram](https://img.shields.io/badge/Instagram-@titoo.uvu-E4405F?style=for-the-badge&logo=instagram&logoColor=white&labelColor=101010)](https://www.instagram.com/titoo.uvu/)
-<br/>
-[![Email](https://img.shields.io/badge/miguelitodiaz169@gmail.com-MI_CORREO_PERSONAL-D14836?style=for-the-badge&logo=gmail&logoColor=white&labelColor=101010)](mailto:miguelitodiaz169@gmail.com)
+Para compilar los estilos de Tailwind:
+```bash
+  npm run build
+```
+
+### 6. Ejecutar el servidor de desarrollo
+```bash
+  python manage.py runserver
+```
+La aplicación estará disponible en: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+
+---
+
+## Tecnologías Usadas
+- Django
+- PostgreSQL
+- Tailwind CSS
+- Node.js
+
+---
+
+## Estado del Proyecto
+El proyecto está en desarrollo y se seguirá actualizando con nuevas funcionalidades.
+
+---
+
+## Contribuir
+Si deseas contribuir, siéntete libre de hacer un fork y enviar un pull request.
+
+---
+
+## Licencia
+Este proyecto está bajo la licencia MIT.
+
+
