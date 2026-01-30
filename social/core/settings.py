@@ -94,8 +94,8 @@ AUTHENTICATION_BACKENDS = [
 
 # ================ MODIFICAR ALLAUTH ==================== #
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
-ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_AUTHENTICATION_METHOD = "email"
+# ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_UNIQUE = True
 AUTH_USER_MODEL="users.User"
 ACCOUNT_LOGOUT_ON_GET = True
@@ -111,6 +111,27 @@ ACCOUNT_EMAIL_SUBJECT_PREFIX = "Hgost Media - "
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "account_login"
 
+
+ACCOUNT_ALLOW_REGISTRATION = env.bool(
+    "DJANGO_ACCOUNT_ALLOW_REGISTRATION",
+    True
+)
+
+ACCOUNT_LOGIN_METHODS = {"email"}
+
+ACCOUNT_SIGNUP_FIELDS = [
+    "email*",
+    "username*",
+    "password1*",
+    "password2*",
+]
+
+ACCOUNT_EMAIL_UNIQUE = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+
+ACCOUNT_LOGOUT_ON_GET = True
+
+AUTH_USER_MODEL = "users.User"
 
 
 
@@ -154,9 +175,19 @@ TEMPLATES = [
 
 
 #CONFIGURACION PARA POSTGRESQL
+# DATABASES = {
+#     "default": env.db(
+#         "DATABASE_URL",
+#         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
+#     )
+# }
 DATABASES = {
-    "default": env.db("DATABASE_URL", default="postgres:///red_social"),
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
 }
+
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 #pip install argon2-cffi
